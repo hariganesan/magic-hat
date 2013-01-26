@@ -34,6 +34,11 @@ CardGame::CardGame() {
 		Card *card = new Card(randNum/13, randNum % 13);
 		deck[i] = card;
 	}
+
+	// fill up discard
+	for (int i = 0; i < DECK_SIZE; i++) {
+		discard[i] = NULL;
+	}
 }
 
 // TODO: delete cards if alloc'd
@@ -63,9 +68,57 @@ Card *CardGame::getCard() {
 	return ptr;
 }
 
+const char *CardGame::getSuit(int suit) {
+	if (suit == SPADES)
+		return "S";
+	else if (suit == HEARTS)
+		return "H";
+	else if (suit == DIAMONDS)
+		return "D";
+	else if (suit == CLUBS)
+		return "C";
+	else
+		return NULL;
+}
+
+const char *CardGame::getNumber(int number) {
+	if (number == ACE)
+		return "A";
+	else if (number == TWO)
+		return "2";
+	else if (number == THREE)
+		return "3";
+	else if (number == FOUR)
+		return "4";
+	else if (number == FIVE)
+		return "5";
+	else if (number == SIX)
+		return "6";
+	else if (number == SEVEN)
+		return "7";
+	else if (number == EIGHT)
+		return "8";
+	else if (number == NINE)
+		return "9";
+	else if (number == TEN)
+		return "10";
+	else if (number == JACK)
+		return "J";
+	else if (number == QUEEN)
+		return "Q";
+	else if (number == KING)
+		return "K";
+	else
+		return NULL;
+}
+
 Player *CardGame::getPlayer(int player) {
 	Player *p = players[player];
 	return p;
+}
+
+Card **CardGame::getFelt() {
+	return felt;
 }
 
 void CardGame::playCard(int player, int suit, int number) {
@@ -177,21 +230,28 @@ void CardGame::clearFelt() {
 	winningCard = NULL;
 
 	//TODO: clear felt into discard
-	// update score?
+	int j = 0;
+	while (discard[j++] != NULL) {
+		if (j == DECK_SIZE) {
+			return;
+		}
+	}
+
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		discard[j++] = felt[i];
+		felt[i] = NULL;
+	}
 }
 
 void CardGame::printHand(int player) {
 	Player *p = getPlayer(player);
 	cout << "player " << player << ": " << endl;
 	for (int i = 0; i < FULL_HAND_LENGTH; i++) {
-		cout << "suit: " << p->hand[i]->suit; 
-		cout << ", number: " << p->hand[i]->number << endl;
+		if (p->hand[i] != NULL) {
+			cout << "suit: " << p->hand[i]->suit; 
+			cout << ", number: " << p->hand[i]->number << endl;
+		}	
 	}
-}
-
-void CardGame::drawHand(int player, int y_location) {
-	Player *p = getPlayer(player);
-	
 }
 
 bool CardGame::playRandomCard(int player) {

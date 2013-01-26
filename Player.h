@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <cstdlib>
+#include <sstream>
 
 using namespace std;
 
@@ -81,6 +82,7 @@ class CardGame {
 	int bid[2];
 	int score[2];
 	Card *deck[DECK_SIZE];
+	Card *discard[DECK_SIZE];
 	Card *felt[NUM_PLAYERS];
 
 public:
@@ -88,7 +90,10 @@ public:
 	~CardGame();
 	void fillHand(int player);
 	Card *getCard();
+	const char *getSuit(int suit);
+	const char *getNumber(int number);
 	Player *getPlayer(int player);
+	Card **getFelt();
 	void playCard(int player, int suit, int number);
 	void playCard(int player, Card *card);
 	bool winningTrick(Card *card);

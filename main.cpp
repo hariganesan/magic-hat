@@ -10,7 +10,7 @@
 #include "Player.h"
 
 // window dimensions
-const int WINDOW_WIDTH = 600;
+const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 
 // font
@@ -75,23 +75,33 @@ int main(int argc, char **argv) {
 }
 
 void runGame() {
+	font = TTF_OpenFont(fontpath, 16);
+	//SDL_Color fontColor = {200, 200, 200};
 	bool isRunning = true;
+	int playerTurn = 0;
 	CardGame *g = new CardGame();
 	SDL_Event event;
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		g->fillHand(i);
-		g->printHand(i);
 	}
 
-	g->playRandomCard(0);
-	g->playRandomCard(1);
+	//g->playRandomCard(0);
+	//g->playRandomCard(1);
+	//g->playRandomCard(2);
 
 	while (isRunning) {
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT || 
 				 (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_q)) {
 				isRunning = false;
+			} else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_m) {
+				toggleMusic();
+			} else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_SPACE) {
+				g->playRandomCard(playerTurn);
+				if (++playerTurn >= 4) {
+					playerTurn = 0;
+				}
 			}
 		}
 		
@@ -104,13 +114,47 @@ void render(CardGame *g) {
 	glPushMatrix();
 	// TODO: change to 0,1 for depth
 	glOrtho(0, WINDOW_WIDTH, WINDOW_HEIGHT, 0, -1, 1); // set matrix
+	SDL_Color fontColor = {200, 200, 200};
+	SDL_Rect location;
+	Player *p;
 
 	////////////////
 	// BEGIN DRAWING
 	////////////////
 
+	// HANDS
+
 	for (int i = 0; i < NUM_PLAYERS; i++) {
-		g->drawHand(i, i*200+200);
+		p = g->getPlayer(i);	
+
+		location.x = 50;
+		location.y = i*50+400;
+
+		for (int i = 0; i < FULL_HAND_LENGTH; i++) {
+			if (p->hand[i] != NULL) {
+				SDL_GL_RenderText(g->getNumber(p->hand[i]->number), fontColor, &location);
+				location.x += 20;
+				
+				SDL_GL_RenderText(g->getSuit(p->hand[i]->suit), fontColor, &location);
+				location.x += 30;
+			}	
+		}
+	}
+
+	// FELT
+
+	Card** felt = g->getFelt();
+	location.x = 200;
+	location.y = 200;
+
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		if (felt[i] != NULL) {
+			SDL_GL_RenderText(g->getNumber(felt[i]->number), fontColor, &location);
+			location.x += 20;
+				
+			SDL_GL_RenderText(g->getSuit(felt[i]->suit), fontColor, &location);
+			location.x += 40;
+		}
 	}
 
 	////////////////
