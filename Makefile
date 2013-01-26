@@ -14,12 +14,11 @@ all: main clean
 main: main.o Player.o
 	$(CC) -o $@ $(COCOA) $(GL) $(SDL) $^
 
-main.o: main.cpp Player.h
+main.o: main.cpp
 	$(CC) $(CFLAGS) -c $^
 
-Player.o: Player.cpp Player.h
+Player.o: Player.cpp
 	$(CC) $(CFLAGS) -c $^
 
 clean:
 	rm *.o
-	rm *.h.gch

@@ -7,7 +7,7 @@
 #include "SDL_ttf/SDL_ttf.h"
 #include <iostream>
 #include <string>
-#include "Player.h"
+#include "Player.hpp"
 
 // window dimensions
 const int WINDOW_WIDTH = 800;
@@ -15,11 +15,11 @@ const int WINDOW_HEIGHT = 600;
 
 // font
 TTF_Font *font;
-const char *fontpath = "chintzy.ttf";
+const char *fontpath = "fonts/chintzy.ttf";
 
 // music
 Mix_Music *music = NULL;
-const char *musicpath = "nonst.mid";
+const char *musicpath = "music/senomar.mid";
 
 using namespace std;
 
@@ -79,6 +79,7 @@ void runGame() {
 	//SDL_Color fontColor = {200, 200, 200};
 	bool isRunning = true;
 	int playerTurn = 0;
+	int cardsOnFelt = 0;
 	CardGame *g = new CardGame();
 	SDL_Event event;
 
@@ -86,9 +87,7 @@ void runGame() {
 		g->fillHand(i);
 	}
 
-	//g->playRandomCard(0);
-	//g->playRandomCard(1);
-	//g->playRandomCard(2);
+	g->setTrumpSuit(NOTRUMP);
 
 	while (isRunning) {
 		while (SDL_PollEvent(&event)) {
@@ -103,6 +102,11 @@ void runGame() {
 					playerTurn = 0;
 				}
 			}
+		}
+
+		if (cardsOnFelt == 4) {
+			cardsOnFelt = 0;
+			playerTurn = g->leadPlayer->name;
 		}
 		
 		render(g);
@@ -155,6 +159,20 @@ void render(CardGame *g) {
 			SDL_GL_RenderText(g->getSuit(felt[i]->suit), fontColor, &location);
 			location.x += 40;
 		}
+	}
+
+	// SCORES
+
+	location.x = 100;
+	location.y = 50;
+	stringstream ss;
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		p = g->getPlayer(i);
+		ss << p->tricks;
+		SDL_GL_RenderText(ss.str().c_str(), fontColor, &location);
+		location.x += 100;
+		ss.str("");
+		ss.clear();
 	}
 
 	////////////////

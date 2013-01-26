@@ -1,7 +1,7 @@
 // Hari Ganesan 1/17/13
 // player/cardgame class for magic-hat
 
-#include "Player.h"
+#include "Player.hpp"
 
 CardGame::CardGame() {
 	// keep track of seeded numbers
@@ -223,13 +223,13 @@ bool CardGame::winningTrick(Card *card) {
 }
 
 void CardGame::clearFelt() {
-	cout << "clearing felt" << endl;
 	winningPlayer->tricks++;
 	leadPlayer = winningPlayer;
+	cout << leadPlayer->name << endl;
 	winningPlayer = NULL;
 	winningCard = NULL;
 
-	//TODO: clear felt into discard
+	//clear felt into discard
 	int j = 0;
 	while (discard[j++] != NULL) {
 		if (j == DECK_SIZE) {
@@ -264,4 +264,8 @@ bool CardGame::playRandomCard(int player) {
 	}
 
 	return false;
+}
+
+void CardGame::setTrumpSuit(int suit) {
+	trumpSuit = suit;
 }
