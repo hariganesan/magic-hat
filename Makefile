@@ -4,15 +4,20 @@
 # compiler options
 CC=g++
 CFLAGS=-pedantic -Wall -I/sw/include -L/sw/lib
-SDL=-lSDLmain -lSDL -lSDL_ttf
+SDL=-lSDLmain -lSDL -lSDL_ttf -lSDL_mixer
 COCOA=-framework Cocoa
 GL=-framework OpenGL -L/sw/lib
 
+all: main clean
+
 # build main
-main: main.o
+main: main.o Player.o
 	$(CC) -o $@ $(COCOA) $(GL) $(SDL) $^
 
-main.o: main.cpp
+main.o: main.cpp Player.h
+	$(CC) $(CFLAGS) -c $^
+
+Player.o: Player.cpp Player.h
 	$(CC) $(CFLAGS) -c $^
 
 clean:
