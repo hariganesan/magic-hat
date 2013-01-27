@@ -43,6 +43,11 @@ enum {
 	DEFENDER_TWO
 };
 
+enum {
+	BIDDING,
+	PLAYING
+};
+
 struct Card {
 	int suit;
 	int number;
@@ -85,6 +90,7 @@ class CardGame {
 	Card *felt[NUM_PLAYERS];
 
 public:
+	int display;
 	Player *leadPlayer;
 
 	CardGame();
@@ -102,5 +108,6 @@ public:
 	void printHand(int player);
 	void drawHand(int player, int y_location);
 	bool playRandomCard(int player);
+	bool playRandomLegalCard(int player);
 	void setTrumpSuit(int suit);
 };

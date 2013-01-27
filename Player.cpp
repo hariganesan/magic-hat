@@ -4,14 +4,20 @@
 #include "Player.hpp"
 
 CardGame::CardGame() {
-	// keep track of seeded numbers
-	srand(time(NULL));
+	// set display to bidding
+	display = BIDDING;
+	bid[0] = -1;
+	bid[1] = -1;
 
+	// initialize players
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		Player *newPlayer = new Player(i);
 		players[i] = newPlayer;
 		felt[i] = NULL;
 	}
+
+	// keep track of seeded numbers
+	srand(time(NULL));
 
 	// generate random number list 1-52
 	int numArray[DECK_SIZE];
@@ -141,7 +147,7 @@ void CardGame::playCard(int player, int suit, int number) {
 	}
 
 	if (!cardFound) {
-		fprintf(stderr, "error: card not found");
+		cerr << "error: card not found" << endl;
 		return;
 	}
 
@@ -182,7 +188,7 @@ void CardGame::playCard(int player, Card *card) {
 	}
 
 	if (!cardFound) {
-		fprintf(stderr, "error: card not found");
+		cerr << "error: card not found" << endl;
 		return;
 	}
 
@@ -190,7 +196,6 @@ void CardGame::playCard(int player, Card *card) {
 	if (j == 0) {
 		winningCard = card;
 		winningPlayer = getPlayer(player);
-		//leadPlayer = player;
 		leadSuit = card->suit;
 	// card currently is winning trick			
 	} else if (winningTrick(card)) {
@@ -225,9 +230,9 @@ bool CardGame::winningTrick(Card *card) {
 void CardGame::clearFelt() {
 	winningPlayer->tricks++;
 	leadPlayer = winningPlayer;
-	cout << leadPlayer->name << endl;
 	winningPlayer = NULL;
 	winningCard = NULL;
+	leadSuit = -1;
 
 	//clear felt into discard
 	int j = 0;
@@ -256,6 +261,30 @@ void CardGame::printHand(int player) {
 
 bool CardGame::playRandomCard(int player) {
 	Player *p = getPlayer(player);
+	for (int i = 0; i < FULL_HAND_LENGTH; i++) {
+		if (p->hand[i] != NULL) {
+			playCard(player, p->hand[i]);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool CardGame::playRandomLegalCard(int player) {
+	Player *p = getPlayer(player);
+
+	if (leadSuit != -1) {
+		// if you have lead suit, play it
+		for (int i = 0; i < FULL_HAND_LENGTH; i++) {
+			if (p->hand[i] != NULL && p->hand[i]->suit == leadSuit) {
+				playCard(player, p->hand[i]);
+				return true;
+			}
+		}
+	}
+
+	// otherwise, play any card
 	for (int i = 0; i < FULL_HAND_LENGTH; i++) {
 		if (p->hand[i] != NULL) {
 			playCard(player, p->hand[i]);

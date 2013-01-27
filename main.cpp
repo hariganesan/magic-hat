@@ -76,7 +76,6 @@ int main(int argc, char **argv) {
 
 void runGame() {
 	font = TTF_OpenFont(fontpath, 16);
-	//SDL_Color fontColor = {200, 200, 200};
 	bool isRunning = true;
 	int playerTurn = 0;
 	int cardsOnFelt = 0;
@@ -87,28 +86,38 @@ void runGame() {
 		g->fillHand(i);
 	}
 
+	// skip bidding
+	g->display = PLAYING;
 	g->setTrumpSuit(NOTRUMP);
 
 	while (isRunning) {
+		// EVENTS
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT || 
 				 (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_q)) {
 				isRunning = false;
 			} else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_m) {
 				toggleMusic();
-			} else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_SPACE) {
-				g->playRandomCard(playerTurn);
-				if (++playerTurn >= 4) {
-					playerTurn = 0;
+			}
+
+			if (g->display == PLAYING) {
+				if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_SPACE) {
+					g->playRandomLegalCard(playerTurn);
+					cardsOnFelt++;
+					if (++playerTurn >= 4) {
+						playerTurn = 0;
+					}
 				}
 			}
 		}
 
+		// LOGIC
 		if (cardsOnFelt == 4) {
 			cardsOnFelt = 0;
 			playerTurn = g->leadPlayer->name;
 		}
 		
+		// RENDERING
 		render(g);
 	}
 }
@@ -126,53 +135,63 @@ void render(CardGame *g) {
 	// BEGIN DRAWING
 	////////////////
 
-	// HANDS
+	if (g->display == BIDDING) {
 
-	for (int i = 0; i < NUM_PLAYERS; i++) {
-		p = g->getPlayer(i);	
+		// BIDDING BOX
 
-		location.x = 50;
-		location.y = i*50+400;
+		
 
-		for (int i = 0; i < FULL_HAND_LENGTH; i++) {
-			if (p->hand[i] != NULL) {
-				SDL_GL_RenderText(g->getNumber(p->hand[i]->number), fontColor, &location);
+	// PLAYING
+	} else if (g->display == PLAYING) {
+
+		// HANDS
+
+		for (int i = 0; i < NUM_PLAYERS; i++) {
+			p = g->getPlayer(i);	
+
+			location.x = 50;
+			location.y = i*50+400;
+
+			for (int i = 0; i < FULL_HAND_LENGTH; i++) {
+				if (p->hand[i] != NULL) {
+					SDL_GL_RenderText(g->getNumber(p->hand[i]->number), fontColor, &location);
+					location.x += 20;
+					
+					SDL_GL_RenderText(g->getSuit(p->hand[i]->suit), fontColor, &location);
+					location.x += 30;
+				}	
+			}
+		}
+
+		// FELT
+
+		Card** felt = g->getFelt();
+		location.x = 200;
+		location.y = 200;
+
+		for (int i = 0; i < NUM_PLAYERS; i++) {
+			if (felt[i] != NULL) {
+				SDL_GL_RenderText(g->getNumber(felt[i]->number), fontColor, &location);
 				location.x += 20;
-				
-				SDL_GL_RenderText(g->getSuit(p->hand[i]->suit), fontColor, &location);
-				location.x += 30;
-			}	
+					
+				SDL_GL_RenderText(g->getSuit(felt[i]->suit), fontColor, &location);
+				location.x += 40;
+			}
 		}
-	}
 
-	// FELT
+		// SCORES
 
-	Card** felt = g->getFelt();
-	location.x = 200;
-	location.y = 200;
-
-	for (int i = 0; i < NUM_PLAYERS; i++) {
-		if (felt[i] != NULL) {
-			SDL_GL_RenderText(g->getNumber(felt[i]->number), fontColor, &location);
-			location.x += 20;
-				
-			SDL_GL_RenderText(g->getSuit(felt[i]->suit), fontColor, &location);
-			location.x += 40;
+		location.x = 100;
+		location.y = 50;
+		stringstream ss;
+		for (int i = 0; i < NUM_PLAYERS; i++) {
+			p = g->getPlayer(i);
+			ss << p->tricks;
+			SDL_GL_RenderText(ss.str().c_str(), fontColor, &location);
+			location.x += 150;
+			ss.str("");
+			ss.clear();
 		}
-	}
-
-	// SCORES
-
-	location.x = 100;
-	location.y = 50;
-	stringstream ss;
-	for (int i = 0; i < NUM_PLAYERS; i++) {
-		p = g->getPlayer(i);
-		ss << p->tricks;
-		SDL_GL_RenderText(ss.str().c_str(), fontColor, &location);
-		location.x += 100;
-		ss.str("");
-		ss.clear();
 	}
 
 	////////////////
@@ -188,7 +207,6 @@ void render(CardGame *g) {
 void SDL_GL_RenderText(const char *text, SDL_Color color, SDL_Rect *location) {
 	SDL_Surface *initial;
 	SDL_Surface *intermediary;
-	//SDL_Rect rect;
 	int w,h;
 	GLuint texture;
 	
@@ -224,14 +242,14 @@ void SDL_GL_RenderText(const char *text, SDL_Color color, SDL_Rect *location) {
 		// Recall that the origin is in the lower-left corner
 		//  That is why the TexCoords specify different corners
 		//  than the Vertex coors seem to. 
-		glTexCoord2f(0.0f, 0.0f); 
-			glVertex2f(location->x    , location->y);
-		glTexCoord2f(1.0f, 0.0f); 
-			glVertex2f(location->x + w, location->y);
-		glTexCoord2f(1.0f, 1.0f); 
-			glVertex2f(location->x + w, location->y + h);
-		glTexCoord2f(0.0f, 1.0f); 
-			glVertex2f(location->x    , location->y + h);
+	glTexCoord2f(0.0f, 0.0f); 
+	glVertex2f(location->x    , location->y);
+	glTexCoord2f(1.0f, 0.0f); 
+	glVertex2f(location->x + w, location->y);
+	glTexCoord2f(1.0f, 1.0f); 
+	glVertex2f(location->x + w, location->y + h);
+	glTexCoord2f(0.0f, 1.0f); 
+	glVertex2f(location->x    , location->y + h);
 	glEnd();
 	
 	// Bad things happen if we delete the texture before it finishes 
