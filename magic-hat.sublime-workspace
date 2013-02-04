@@ -8,27 +8,44 @@
 	"buffers":
 	[
 		{
+			"file": "main.cpp",
+			"settings":
+			{
+				"buffer_size": 6524,
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "Player.cpp",
 			"settings":
 			{
-				"buffer_size": 3084,
+				"buffer_size": 5898,
 				"line_ending": "Unix",
 				"name": "// Hari Ganesan 1/17/13"
+			}
+		},
+		{
+			"file": "Player.hpp",
+			"settings":
+			{
+				"buffer_size": 1614,
+				"line_ending": "Unix",
+				"name": "// Hari Ganesan 1/24/13"
 			}
 		},
 		{
 			"file": "Makefile",
 			"settings":
 			{
-				"buffer_size": 351,
+				"buffer_size": 411,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "main.cpp",
+			"file": "docs/Notes.md",
 			"settings":
 			{
-				"buffer_size": 331,
+				"buffer_size": 217,
 				"line_ending": "Unix"
 			}
 		}
@@ -103,6 +120,26 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"	glV",
+			"	gl",
+			"fprintf(stderr",
+			"string ",
+			"const char *",
+			"/*",
+			"*/",
+			"players[player]",
+			".",
+			"i",
+			"number",
+			"numPlayers",
+			"players[player]",
+			".",
+			"er]->",
+			"CardGame::",
+			"(*",
+			"]]).",
+			"rd.",
+			".suit",
 			"52",
 			" 52",
 			"[52]",
@@ -210,27 +247,7 @@
 			"node",
 			"nod",
 			"nodes",
-			"node",
-			"//",
-			"	",
-			"dist =",
-			"lldist =",
-			"dist",
-			"ruler",
-			"qtsize",
-			"*size",
-			"size",
-			"qt",
-			"distance",
-			"queueSize",
-			"qt",
-			"inBox",
-			"nodesToCheck",
-			"noCandidates",
-			"continue;\n      }\n      ",
-			"CHILD",
-			"      {",
-			"qt"
+			"node"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -248,23 +265,50 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 4,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "Player.cpp",
+					"file": "main.cpp",
 					"settings":
 					{
-						"buffer_size": 3084,
+						"buffer_size": 6524,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								910,
-								910
+								3243,
+								3243
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1998.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Player.cpp",
+					"settings":
+					{
+						"buffer_size": 5898,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5898,
+								5898
 							]
 						],
 						"settings":
@@ -274,25 +318,53 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 30.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "Makefile",
+					"buffer": 2,
+					"file": "Player.hpp",
 					"settings":
 					{
-						"buffer_size": 351,
+						"buffer_size": 1614,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								289,
-								289
+								479,
+								479
+							]
+						],
+						"settings":
+						{
+							"auto_name": "// Hari Ganesan 1/24/13",
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1143.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "Makefile",
+					"settings":
+					{
+						"buffer_size": 411,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								217,
+								217
 							]
 						],
 						"settings":
@@ -306,24 +378,24 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "main.cpp",
+					"buffer": 4,
+					"file": "docs/Notes.md",
 					"settings":
 					{
-						"buffer_size": 331,
+						"buffer_size": 217,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								305,
-								305
+								217,
+								217
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/C++/C++.tmLanguage"
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -367,7 +439,7 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 129.0
+		"height": 140.0
 	},
 	"replace":
 	{

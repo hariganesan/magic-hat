@@ -60,15 +60,19 @@ struct Card {
 
 struct Player {
 	Card *hand[FULL_HAND_LENGTH];
+	int numCards;
 	int name;
 	int role;
 	int tricks;
 	int difficulty;
+	int hcp;
 
 	Player(int n) {
 		role = 0;
 		tricks = 0;
 		difficulty = 0;
+		numCards = 0;
+		hcp = 0;
 		name = n;
 
 		for (int i = 0; i < FULL_HAND_LENGTH; i++) {
@@ -95,13 +99,13 @@ public:
 
 	CardGame();
 	~CardGame();
-	void fillHand(int player);
+	void dealCards();
 	Card *getCard();
 	const char *getSuit(int suit);
 	const char *getNumber(int number);
 	Player *getPlayer(int player);
 	Card **getFelt();
-	void playCard(int player, int suit, int number);
+	//void playCard(int player, int suit, int number);
 	void playCard(int player, Card *card);
 	bool winningTrick(Card *card);
 	void clearFelt();

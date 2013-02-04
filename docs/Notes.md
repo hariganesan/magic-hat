@@ -1,11 +1,11 @@
 Notes
 =======
 
-- order of cards in felt
-- public vs private vars
-- how to keep track of suit count per player
-- keep cards ordered in hand
-	- shuffle deck while dealing?
+- how to keep track of information per player
+	- set info when adding, and when removing from player's hand
 - bidding
 	- how to pull up separate menu
-		- 
+
+
+- setting up new render file
+- making constants for each location, where to put?

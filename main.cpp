@@ -12,6 +12,7 @@
 // window dimensions
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
+const int MARGIN = 10;
 
 // font
 TTF_Font *font;
@@ -44,7 +45,7 @@ int main(int argc, char **argv) {
 	// initialize window properties
 	SDL_WM_SetCaption("Magic Hat", NULL);
 	SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32, SDL_OPENGL);
-	glClearColor(0, 0, 0, 1); // RGBA
+	glClearColor(0, 0.4, 0.1, 1); // RGBA
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT); // viewable part of the window
 	glShadeModel(GL_SMOOTH); // add a gradient
 	glMatrixMode(GL_PROJECTION); // 2D drawing
@@ -76,19 +77,19 @@ int main(int argc, char **argv) {
 
 void runGame() {
 	font = TTF_OpenFont(fontpath, 16);
-	bool isRunning = true;
 	int playerTurn = 0;
 	int cardsOnFelt = 0;
 	CardGame *g = new CardGame();
-	SDL_Event event;
-
-	for (int i = 0; i < NUM_PLAYERS; i++) {
-		g->fillHand(i);
-	}
 
 	// skip bidding
+	g->dealCards();
 	g->display = PLAYING;
 	g->setTrumpSuit(NOTRUMP);
+
+	// event bools
+	SDL_Event event;
+	bool isRunning = true;
+	bool space = false;
 
 	while (isRunning) {
 		// EVENTS
@@ -102,19 +103,27 @@ void runGame() {
 
 			if (g->display == PLAYING) {
 				if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_SPACE) {
-					g->playRandomLegalCard(playerTurn);
-					cardsOnFelt++;
-					if (++playerTurn >= 4) {
-						playerTurn = 0;
-					}
+					space = true;
 				}
 			}
 		}
 
 		// LOGIC
-		if (cardsOnFelt == 4) {
-			cardsOnFelt = 0;
-			playerTurn = g->leadPlayer->name;
+		if (space) {
+			if (cardsOnFelt == 4) {
+				g->clearFelt();
+				cardsOnFelt = 0;
+				playerTurn = g->leadPlayer->name;
+			} else {
+				g->playRandomLegalCard(playerTurn);
+				cardsOnFelt++;
+				
+				if (++playerTurn >= 4) {
+					playerTurn = 0;
+				}
+			}
+
+			space = false;
 		}
 		
 		// RENDERING
@@ -127,13 +136,24 @@ void render(CardGame *g) {
 	glPushMatrix();
 	// TODO: change to 0,1 for depth
 	glOrtho(0, WINDOW_WIDTH, WINDOW_HEIGHT, 0, -1, 1); // set matrix
-	SDL_Color fontColor = {200, 200, 200};
+	SDL_Color TEXT_WHITE = {200, 200, 200};
+	SDL_Color TEXT_BLACK = {20, 20, 20};
+	SDL_Color TEXT_RED = {150, 0, 0};
 	SDL_Rect location;
 	Player *p;
 
 	////////////////
 	// BEGIN DRAWING
 	////////////////
+
+	// BACKGROUND
+	glColor4ub(0, 100, 30, 255);
+	glBegin(GL_QUADS);
+	glVertex2f(MARGIN, MARGIN);
+	glVertex2f(WINDOW_WIDTH - MARGIN, MARGIN);
+	glVertex2f(WINDOW_WIDTH - MARGIN, WINDOW_HEIGHT - MARGIN);
+	glVertex2f(MARGIN, WINDOW_HEIGHT - MARGIN);
+	glEnd();
 
 	if (g->display == BIDDING) {
 
@@ -146,48 +166,100 @@ void render(CardGame *g) {
 
 		// HANDS
 
-		for (int i = 0; i < NUM_PLAYERS; i++) {
-			p = g->getPlayer(i);	
+		// player 0
+		p = g->getPlayer(0);
+		location.x = 50;
+		location.y = 150;
 
-			location.x = 50;
-			location.y = i*50+400;
-
-			for (int i = 0; i < FULL_HAND_LENGTH; i++) {
-				if (p->hand[i] != NULL) {
-					SDL_GL_RenderText(g->getNumber(p->hand[i]->number), fontColor, &location);
-					location.x += 20;
-					
-					SDL_GL_RenderText(g->getSuit(p->hand[i]->suit), fontColor, &location);
-					location.x += 30;
-				}	
-			}
+		for (int i = 0; i < FULL_HAND_LENGTH; i++) {
+			if (p->hand[i] != NULL) {
+				SDL_GL_RenderText(g->getNumber(p->hand[i]->number), TEXT_WHITE, &location);
+				location.x += 20;
+				
+				SDL_GL_RenderText(g->getSuit(p->hand[i]->suit), TEXT_WHITE, &location);
+				location.y += 25;
+				location.x -= 20;
+			}	
 		}
+
+		// player 1
+		p = g->getPlayer(1);
+		location.x = 80;
+		location.y = 50;
+
+		for (int i = 0; i < FULL_HAND_LENGTH; i++) {
+			if (p->hand[i] != NULL) {
+				SDL_GL_RenderText(g->getNumber(p->hand[i]->number), TEXT_WHITE, &location);
+				location.x += 20;
+				
+				SDL_GL_RenderText(g->getSuit(p->hand[i]->suit), TEXT_WHITE, &location);
+				location.x += 30;
+			}	
+		}
+
+		// player 2
+		p = g->getPlayer(2);
+		location.x = 700;
+		location.y = 150;
+
+		for (int i = 0; i < FULL_HAND_LENGTH; i++) {
+			if (p->hand[i] != NULL) {
+				SDL_GL_RenderText(g->getNumber(p->hand[i]->number), TEXT_WHITE, &location);
+				location.x += 20;
+				
+				SDL_GL_RenderText(g->getSuit(p->hand[i]->suit), TEXT_WHITE, &location);
+				location.y += 25;
+				location.x -= 20;
+			}	
+		}
+
+		// player 3
+		p = g->getPlayer(3);
+		location.x = 80;
+		location.y = 550;
+
+		for (int i = 0; i < FULL_HAND_LENGTH; i++) {
+			if (p->hand[i] != NULL) {
+				SDL_GL_RenderText(g->getNumber(p->hand[i]->number), TEXT_WHITE, &location);
+				location.x += 20;
+				
+				SDL_GL_RenderText(g->getSuit(p->hand[i]->suit), TEXT_WHITE, &location);
+				location.x += 30;
+			}	
+		}
+
 
 		// FELT
 
 		Card** felt = g->getFelt();
-		location.x = 200;
-		location.y = 200;
+
+		int cardLocations[4][2] =
+		{{340, 250},
+		{380, 220},
+		{420, 250},
+		{380, 280}};
 
 		for (int i = 0; i < NUM_PLAYERS; i++) {
 			if (felt[i] != NULL) {
-				SDL_GL_RenderText(g->getNumber(felt[i]->number), fontColor, &location);
+				location.x = cardLocations[i][0];
+				location.y = cardLocations[i][1];
+
+				SDL_GL_RenderText(g->getNumber(felt[i]->number), TEXT_WHITE, &location);
 				location.x += 20;
 					
-				SDL_GL_RenderText(g->getSuit(felt[i]->suit), fontColor, &location);
-				location.x += 40;
+				SDL_GL_RenderText(g->getSuit(felt[i]->suit), TEXT_WHITE, &location);
 			}
 		}
 
 		// SCORES
 
-		location.x = 100;
-		location.y = 50;
+		location.x = 150;
+		location.y = 10;
 		stringstream ss;
 		for (int i = 0; i < NUM_PLAYERS; i++) {
 			p = g->getPlayer(i);
 			ss << p->tricks;
-			SDL_GL_RenderText(ss.str().c_str(), fontColor, &location);
+			SDL_GL_RenderText(ss.str().c_str(), TEXT_RED, &location);
 			location.x += 150;
 			ss.str("");
 			ss.clear();

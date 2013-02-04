@@ -19,25 +19,9 @@ CardGame::CardGame() {
 	// keep track of seeded numbers
 	srand(time(NULL));
 
-	// generate random number list 1-52
-	int numArray[DECK_SIZE];
-	int randNumArray[DECK_SIZE];
-	int randNum;
-	for (int i = 0; i < DECK_SIZE; i++)
-		numArray[i] = i;
-
+	// fill up deck (in order)
 	for (int i = 0; i < DECK_SIZE; i++) {
-		randNum = rand() % (DECK_SIZE-i);
-		randNumArray[i] = numArray[randNum];
-
-		for (int j = randNum; j < DECK_SIZE; j++)
-			numArray[j] = numArray[j+1];
-	}
-
-	// fill up deck
-	for (int i = 0; i < DECK_SIZE; i++) {
-		randNum = randNumArray[i];
-		Card *card = new Card(randNum/13, randNum % 13);
+		Card *card = new Card(i/13, i % 13);
 		deck[i] = card;
 	}
 
@@ -52,11 +36,37 @@ CardGame::~CardGame() {
 	delete[] players;
 }
 
-void CardGame::fillHand(int player) {
-	for (int i = 0; i < FULL_HAND_LENGTH; i++) {
-		Player *p = getPlayer(player);
-		Card *c = getCard();
-		p->hand[i] = c;
+void CardGame::dealCards() {
+	int numPlayersLeft = NUM_PLAYERS;
+	int playerArray[NUM_PLAYERS];
+	for (int i = 0; i < NUM_PLAYERS; i++)
+		playerArray[i] = i;
+
+	for (int i = 0; i < DECK_SIZE; i++) {
+		if (numPlayersLeft == 0) {
+			cerr << "error: dealing cards" << endl;
+			return;
+		}
+
+		int randNum = rand() % numPlayersLeft;
+		Player *p = getPlayer(playerArray[randNum]);
+
+		if (p->numCards == FULL_HAND_LENGTH) {
+			numPlayersLeft--;
+			i--;
+
+			while (++randNum < NUM_PLAYERS) {
+				playerArray[randNum - 1] = playerArray[randNum];
+			}			
+		} else {
+			Card *c = getCard();
+
+			int j = 0;
+			while (p->hand[j] != NULL)
+				j++;
+			p->hand[j] = c;
+			p->numCards++;
+		}
 	}
 }
 
@@ -127,48 +137,6 @@ Card **CardGame::getFelt() {
 	return felt;
 }
 
-void CardGame::playCard(int player, int suit, int number) {
-	Card *card;
-	Player *p = getPlayer(player);
-	bool cardFound = false;
-	int j = 0;
-	for (int i = 0; i < FULL_HAND_LENGTH; i++) {
-		if (p->hand[i]->suit == suit && p->hand[i]->number == number) {
-			// put card on felt
-			while (felt[j++] != NULL)
-				;
-
-			card = p->hand[i];
-			felt[j] = card;
-			p->hand[i] = NULL;
-			cardFound = true;
-			break;
-		}
-	}
-
-	if (!cardFound) {
-		cerr << "error: card not found" << endl;
-		return;
-	}
-
-	// card is lead card
-	if (j == 0) {
-		winningCard = card;
-		winningPlayer = players[player];
-		//leadPlayer = player;
-		leadSuit = card->suit;
-	// card currently is winning trick			
-	} else if (winningTrick(card)) {
-		winningCard = card;
-		winningPlayer = players[player];
-	}
-
-	// last card, clear hand
-	if (j == NUM_PLAYERS - 1) {
-		clearFelt();
-	}
-}
-
 void CardGame::playCard(int player, Card *card) {
 	// remove card from hand
 	Player *p = getPlayer(player);
@@ -177,11 +145,14 @@ void CardGame::playCard(int player, Card *card) {
 	for (int i = 0; i < FULL_HAND_LENGTH; i++) {
 		if (p->hand[i] == card) {
 			// put card on felt
-			while (felt[j] != NULL)
-				j++;
+			if (felt[player] != NULL) {
+				cerr << "error: felt already has card" << endl;
+				return;
+			}
 
-			felt[j] = card;
+			felt[player] = card;
 			p->hand[i] = NULL;
+			p->numCards--;
 			cardFound = true;
 			break;
 		}
@@ -203,10 +174,11 @@ void CardGame::playCard(int player, Card *card) {
 		winningPlayer = getPlayer(player);
 	}
 
+/*
 	// last card, clear hand
 	if (j == NUM_PLAYERS - 1) {
 		clearFelt();
-	}
+	} */
 }
 
 bool CardGame::winningTrick(Card *card) {
