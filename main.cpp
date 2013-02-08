@@ -17,11 +17,11 @@ const int MARGIN = 10;
 
 // font
 TTF_Font *font;
-const char *fontpath = "fonts/chintzy.ttf";
+const char *fontpath = "assets/fonts/chintzy.ttf";
 
 // music
 Mix_Music *music = NULL;
-const char *musicpath = "music/senomar.mid";
+const char *musicpath = "assets/music/senomar.mid";
 
 using namespace std;
 
@@ -83,6 +83,7 @@ void runGame() {
 	CardGame *g = new CardGame();
 
 	// bidding?
+	// make a 2d array of buttonsvb
 	Button b1Club = Button(100, 100, BID_BUTTON_WIDTH, BID_BUTTON_HEIGHT);
 	//g->dealCards();
 	//g->display = PLAYING;
