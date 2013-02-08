@@ -1,5 +1,5 @@
 // Hari Ganesan 1/24/13
-// Player library file
+// CardGame library file
 
 #include <string>
 #include <iostream>
@@ -83,8 +83,8 @@ struct Player {
 
 class CardGame {
 	Player *players[NUM_PLAYERS];
-	Player *winningPlayer;
-	Card *winningCard;
+	Player *winningPlayer; // player currently winning hand
+	Card *winningCard; // card currently winning trick
 	int leadSuit;
 	int trumpSuit;
 	int bid[2];
@@ -107,7 +107,7 @@ public:
 	Card **getFelt();
 	//void playCard(int player, int suit, int number);
 	void playCard(int player, Card *card);
-	bool winningTrick(Card *card);
+	bool winningTrick(Card *card); // checks to see if card is winning trick
 	void clearFelt();
 	void printHand(int player);
 	void drawHand(int player, int y_location);

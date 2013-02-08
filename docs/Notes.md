@@ -8,4 +8,5 @@ Notes
 
 
 - setting up new render file
+	- how to split up rendering? look up
 - making constants for each location, where to put?

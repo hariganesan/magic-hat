@@ -1,7 +1,7 @@
 // Hari Ganesan 1/17/13
-// player/cardgame class for magic-hat
+// cardgame class for magic-hat
 
-#include "Player.hpp"
+#include "CardGame.hpp"
 
 CardGame::CardGame() {
 	// set display to bidding

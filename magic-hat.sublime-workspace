@@ -11,7 +11,7 @@
 			"file": "main.cpp",
 			"settings":
 			{
-				"buffer_size": 6524,
+				"buffer_size": 8170,
 				"line_ending": "Unix"
 			}
 		},
@@ -19,7 +19,7 @@
 			"file": "Player.cpp",
 			"settings":
 			{
-				"buffer_size": 5898,
+				"buffer_size": 5271,
 				"line_ending": "Unix",
 				"name": "// Hari Ganesan 1/17/13"
 			}
@@ -28,7 +28,7 @@
 			"file": "Player.hpp",
 			"settings":
 			{
-				"buffer_size": 1614,
+				"buffer_size": 1659,
 				"line_ending": "Unix",
 				"name": "// Hari Ganesan 1/24/13"
 			}
@@ -45,7 +45,7 @@
 			"file": "docs/Notes.md",
 			"settings":
 			{
-				"buffer_size": 217,
+				"buffer_size": 303,
 				"line_ending": "Unix"
 			}
 		}
@@ -120,6 +120,17 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"fontColor",
+			"10",
+			"playerNu",
+			"player",
+			"card",
+			"cardLocations[0] = ",
+			";",
+			"];",
+			"[",
+			"}",
+			";",
 			"	glV",
 			"	gl",
 			"fprintf(stderr",
@@ -236,18 +247,7 @@
 			"octhecdec",
 			"initia",
 			"random_",
-			"overlap",
-			"const ",
-			"const",
-			"const ",
-			"size",
-			"qtn",
-			"node",
-			"boxs",
-			"node",
-			"nod",
-			"nodes",
-			"node"
+			"overlap"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -273,15 +273,15 @@
 					"file": "main.cpp",
 					"settings":
 					{
-						"buffer_size": 6524,
+						"buffer_size": 8170,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3243,
-								3243
+								7897,
+								7897
 							]
 						],
 						"settings":
@@ -290,7 +290,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1998.0,
+						"translation.y": 1932.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -300,15 +300,15 @@
 					"file": "Player.cpp",
 					"settings":
 					{
-						"buffer_size": 5898,
+						"buffer_size": 5271,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5898,
-								5898
+								2748,
+								2748
 							]
 						],
 						"settings":
@@ -328,15 +328,15 @@
 					"file": "Player.hpp",
 					"settings":
 					{
-						"buffer_size": 1614,
+						"buffer_size": 1659,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								479,
-								479
+								518,
+								518
 							]
 						],
 						"settings":
@@ -346,7 +346,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1143.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -363,8 +363,8 @@
 						"selection":
 						[
 							[
-								217,
-								217
+								49,
+								411
 							]
 						],
 						"settings":
@@ -382,15 +382,15 @@
 					"file": "docs/Notes.md",
 					"settings":
 					{
-						"buffer_size": 217,
+						"buffer_size": 303,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								217,
-								217
+								303,
+								303
 							]
 						],
 						"settings":

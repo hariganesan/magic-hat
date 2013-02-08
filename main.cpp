@@ -7,7 +7,8 @@
 #include "SDL_ttf/SDL_ttf.h"
 #include <iostream>
 #include <string>
-#include "Player.hpp"
+#include "CardGame.hpp"
+#include "Elements.hpp"
 
 // window dimensions
 const int WINDOW_WIDTH = 800;
@@ -62,7 +63,7 @@ int main(int argc, char **argv) {
     printf("Unable to open audio!\n");
     exit(1);
   } else {
-  	toggleMusic();
+  	//toggleMusic();
   }
 
 	runGame();
@@ -81,10 +82,11 @@ void runGame() {
 	int cardsOnFelt = 0;
 	CardGame *g = new CardGame();
 
-	// skip bidding
-	g->dealCards();
-	g->display = PLAYING;
-	g->setTrumpSuit(NOTRUMP);
+	// bidding?
+	Button b1Club = Button(100, 100, BID_BUTTON_WIDTH, BID_BUTTON_HEIGHT);
+	//g->dealCards();
+	//g->display = PLAYING;
+	//g->setTrumpSuit(NOTRUMP);
 
 	// event bools
 	SDL_Event event;
@@ -94,22 +96,26 @@ void runGame() {
 	while (isRunning) {
 		// EVENTS
 		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT || 
-				 (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_q)) {
-				isRunning = false;
-			} else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_m) {
-				toggleMusic();
-			}
-
-			if (g->display == PLAYING) {
-				if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_SPACE) {
-					space = true;
-				}
+			switch(event.type) {
+				case SDL_QUIT: isRunning = false; break;
+				case SDL_KEYUP:
+					switch (event.key.keysym.sym) {
+						case SDLK_q: isRunning = false; break;
+						case SDLK_m: toggleMusic(); break;
+						case SDLK_SPACE: space = true; break;
+						default: ;
+					}
+				case SDL_MOUSEBUTTONDOWN:
+					if (event.button.button == SDL_BUTTON_LEFT) {
+						b1Club.handleEvents(event.button.x, event.button.y);
+					}
+					break;
+				default: ;
 			}
 		}
 
 		// LOGIC
-		if (space) {
+		if (space && g->display == PLAYING) {
 			if (cardsOnFelt == 4) {
 				g->clearFelt();
 				cardsOnFelt = 0;
@@ -137,7 +143,7 @@ void render(CardGame *g) {
 	// TODO: change to 0,1 for depth
 	glOrtho(0, WINDOW_WIDTH, WINDOW_HEIGHT, 0, -1, 1); // set matrix
 	SDL_Color TEXT_WHITE = {200, 200, 200};
-	SDL_Color TEXT_BLACK = {20, 20, 20};
+	//SDL_Color TEXT_BLACK = {20, 20, 20};
 	SDL_Color TEXT_RED = {150, 0, 0};
 	SDL_Rect location;
 	Player *p;

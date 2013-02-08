@@ -11,13 +11,16 @@ GL=-framework OpenGL -L/sw/lib
 all: main clean
 
 # build main
-main: main.o Player.o
+main: main.o CardGame.o Elements.o
 	$(CC) -o $@ $(COCOA) $(GL) $(SDL) $^
 
 main.o: main.cpp
 	$(CC) $(CFLAGS) -c $^
 
-Player.o: Player.cpp
+CardGame.o: CardGame.cpp
+	$(CC) $(CFLAGS) -c $^
+
+Elements.o: Elements.cpp
 	$(CC) $(CFLAGS) -c $^
 
 clean:
