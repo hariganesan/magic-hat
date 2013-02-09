@@ -87,7 +87,6 @@ class CardGame {
 	Card *winningCard; // card currently winning trick
 	int leadSuit;
 	int trumpSuit;
-	int bid[2];
 	int score[2];
 	Card *deck[DECK_SIZE];
 	Card *discard[DECK_SIZE];
@@ -95,6 +94,7 @@ class CardGame {
 
 public:
 	int display;
+	int bid[2];
 	Player *leadPlayer;
 
 	CardGame();
@@ -113,5 +113,5 @@ public:
 	void drawHand(int player, int y_location);
 	bool playRandomCard(int player);
 	bool playRandomLegalCard(int player);
-	void setTrumpSuit(int suit);
+	void setBid(int number, int suit);
 };

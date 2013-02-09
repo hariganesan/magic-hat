@@ -82,9 +82,18 @@ void runGame() {
 	int cardsOnFelt = 0;
 	CardGame *g = new CardGame();
 
-	// bidding?
-	// make a 2d array of buttonsvb
-	Button b1Club = Button(100, 100, BID_BUTTON_WIDTH, BID_BUTTON_HEIGHT);
+	// make a 2d array of bidding buttons
+	Button *bids[5][7];
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 7; j++) {
+			bids[i][j] = new Button(100+i*BID_BUTTON_WIDTH,100+j*BID_BUTTON_HEIGHT,
+														  BID_BUTTON_WIDTH, BID_BUTTON_HEIGHT);
+		}
+	}
+
+	// navigation buttons
+	Button *play = new Button(400, 400, 50, 25);
+
 	//g->dealCards();
 	//g->display = PLAYING;
 	//g->setTrumpSuit(NOTRUMP);
@@ -93,6 +102,7 @@ void runGame() {
 	SDL_Event event;
 	bool isRunning = true;
 	bool space = false;
+	bool bidSet = false;
 
 	while (isRunning) {
 		// EVENTS
@@ -108,7 +118,19 @@ void runGame() {
 					}
 				case SDL_MOUSEBUTTONDOWN:
 					if (event.button.button == SDL_BUTTON_LEFT) {
-						b1Club.handleEvents(event.button.x, event.button.y);
+						for (int i = 0; i < 5; i++) {
+							for (int j = 0; j < 7; j++) {
+								if (bids[i][j]->handleEvents(event.button.x, event.button.y)) {
+									g->setBid(j, i);
+									bidSet = true;
+								} else if (play->handleEvents(event.button.x, event.button.y)) {
+									if (g->display == BIDDING && bidSet) {
+										g->display = PLAYING;
+										g->dealCards();
+									}
+								}
+							}
+						}
 					}
 					break;
 				default: ;
@@ -166,7 +188,27 @@ void render(CardGame *g) {
 
 		// BIDDING BOX
 
-		
+		location.x = 100;
+		location.y = 100;
+		stringstream ss;
+		for (int i = 0; i < 7; i++) {
+			for (int j = 0; j < 5; j++) {
+				ss << i+1;
+				SDL_GL_RenderText(ss.str().c_str(), TEXT_WHITE, &location);
+				location.x += 20;
+				SDL_GL_RenderText(g->getSuit(j), TEXT_WHITE, &location);
+				location.x += 30;
+				ss.str("");
+				ss.clear();
+			}
+			location.y += BID_BUTTON_HEIGHT;
+			location.x -= 5*(20+30);
+		}
+
+		// NAVIGATION
+		location.x = 400;
+		location.y = 400;
+		SDL_GL_RenderText("Play!", TEXT_WHITE, &location);
 
 	// PLAYING
 	} else if (g->display == PLAYING) {
@@ -235,7 +277,6 @@ void render(CardGame *g) {
 			}	
 		}
 
-
 		// FELT
 
 		Card** felt = g->getFelt();
@@ -271,6 +312,11 @@ void render(CardGame *g) {
 			ss.str("");
 			ss.clear();
 		}
+
+		location.x = 700;
+		SDL_GL_RenderText(g->getNumber(g->bid[0]), TEXT_RED, &location);
+		location.x += 20;
+		SDL_GL_RenderText(g->getSuit(g->bid[1]), TEXT_RED, &location);
 	}
 
 	////////////////
@@ -288,6 +334,11 @@ void SDL_GL_RenderText(const char *text, SDL_Color color, SDL_Rect *location) {
 	SDL_Surface *intermediary;
 	int w,h;
 	GLuint texture;
+
+	if (!text) {
+		cerr << "text not displayed" << endl;
+		return;
+	}
 	
 	// Use SDL_TTF to render our text 
 	initial = TTF_RenderText_Blended(font, text, color);

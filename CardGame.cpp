@@ -8,6 +8,8 @@ CardGame::CardGame() {
 	display = BIDDING;
 	bid[0] = -1;
 	bid[1] = -1;
+	trumpSuit = -1;
+	winningPlayer = NULL;
 
 	// initialize players
 	for (int i = 0; i < NUM_PLAYERS; i++) {
@@ -93,6 +95,8 @@ const char *CardGame::getSuit(int suit) {
 		return "D";
 	else if (suit == CLUBS)
 		return "C";
+	else if (suit == NOTRUMP)
+		return "NT";
 	else
 		return NULL;
 }
@@ -141,7 +145,6 @@ void CardGame::playCard(int player, Card *card) {
 	// remove card from hand
 	Player *p = getPlayer(player);
 	bool cardFound = false;
-	int j = 0;
 	for (int i = 0; i < FULL_HAND_LENGTH; i++) {
 		if (p->hand[i] == card) {
 			// put card on felt
@@ -164,7 +167,7 @@ void CardGame::playCard(int player, Card *card) {
 	}
 
 	// card is lead card
-	if (j == 0) {
+	if (winningPlayer == NULL) {
 		winningCard = card;
 		winningPlayer = getPlayer(player);
 		leadSuit = card->suit;
@@ -267,6 +270,8 @@ bool CardGame::playRandomLegalCard(int player) {
 	return false;
 }
 
-void CardGame::setTrumpSuit(int suit) {
+void CardGame::setBid(int number, int suit) {
+	bid[0] = number;
+	bid[1] = suit;
 	trumpSuit = suit;
 }

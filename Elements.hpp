@@ -9,14 +9,14 @@
 
 using namespace std;
 
-const int BID_BUTTON_WIDTH = 100;
-const int BID_BUTTON_HEIGHT = 50;
+const int BID_BUTTON_WIDTH = 50;
+const int BID_BUTTON_HEIGHT = 25;
 
 class Button {
 	SDL_Rect box; // button attributes
 	SDL_Rect *clip; // part of sprite sheet
 public:
 	Button(int x, int y, int w, int h);
-	void handleEvents(double x, double y);
+	bool handleEvents(double x, double y);
 	void show();
 };

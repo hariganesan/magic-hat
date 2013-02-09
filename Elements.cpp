@@ -13,13 +13,15 @@ Button::Button(int x, int y, int w, int h) {
 	clip = NULL;
 }
 
-void Button::handleEvents(double x, double y) {
+bool Button::handleEvents(double x, double y) {
 	if(( x > box.x ) && ( x < box.x + box.w ) &&
 		 ( y > box.y ) && ( y < box.y + box.h )) {
 		//Set the button sprite
 		//clip = &clips[ CLIP_MOUSEUP ];
-		cout << "set button sprite" << endl;
+		return true;
 	}
+
+	return false;
 }
 
 void Button::show() {
