@@ -3,19 +3,34 @@
 
 #include "CardGame.hpp"
 
-CardGame::CardGame() {
+CardGame::CardGame() : winningPlayer(NULL), trumpSuit(-1), turn(0), nBids(0) {
 	// set display to bidding
 	display = BIDDING;
 	bid[0] = -1;
 	bid[1] = -1;
-	trumpSuit = -1;
-	winningPlayer = NULL;
+
+	//initialize bid history
+	for (int i = 0; i < 60; i++) {
+		bidHistory[i][0] = -1;
+		bidHistory[i][1] = -1;
+	}
 
 	// initialize players
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		Player *newPlayer = new Player(i);
 		players[i] = newPlayer;
 		felt[i] = NULL;
+	}
+
+	// first player is dealer (first)
+	dealer = players[3];
+
+	// set partners
+	for (int i = 0; i < NUM_PLAYERS/2; i++) {
+		players[i]->partner = players[i+2];
+	}
+	for (int i = NUM_PLAYERS/2; i < NUM_PLAYERS; i++) {
+		players[i]->partner = players[i-2];
 	}
 
 	// keep track of seeded numbers
@@ -53,7 +68,7 @@ void CardGame::dealCards() {
 		int randNum = rand() % numPlayersLeft;
 		Player *p = getPlayer(playerArray[randNum]);
 
-		if (p->numCards == FULL_HAND_LENGTH) {
+		if (p->nCards == FULL_HAND_LENGTH) {
 			numPlayersLeft--;
 			i--;
 
@@ -67,7 +82,8 @@ void CardGame::dealCards() {
 			while (p->hand[j] != NULL)
 				j++;
 			p->hand[j] = c;
-			p->numCards++;
+			p->nCards++;
+			p->nCardsBySuit[c->suit]++;
 		}
 	}
 }
@@ -142,6 +158,11 @@ Card **CardGame::getFelt() {
 }
 
 void CardGame::playCard(int player, Card *card) {
+	if (!card) {
+		cerr << "error: no card requested" << endl;
+		return;
+	}
+
 	// remove card from hand
 	Player *p = getPlayer(player);
 	bool cardFound = false;
@@ -155,7 +176,9 @@ void CardGame::playCard(int player, Card *card) {
 
 			felt[player] = card;
 			p->hand[i] = NULL;
-			p->numCards--;
+			p->nCards--;
+			p->nCardsBySuit[card->suit]--;
+			discardCardsBySuit[card->suit]++;
 			cardFound = true;
 			break;
 		}
@@ -177,11 +200,8 @@ void CardGame::playCard(int player, Card *card) {
 		winningPlayer = getPlayer(player);
 	}
 
-/*
-	// last card, clear hand
-	if (j == NUM_PLAYERS - 1) {
-		clearFelt();
-	} */
+	if (++turn == NUM_PLAYERS)
+		turn = 0;
 }
 
 bool CardGame::winningTrick(Card *card) {
@@ -203,7 +223,7 @@ bool CardGame::winningTrick(Card *card) {
 }
 
 void CardGame::clearFelt() {
-	winningPlayer->tricks++;
+	winningPlayer->nTricks++;
 	leadPlayer = winningPlayer;
 	winningPlayer = NULL;
 	winningCard = NULL;
@@ -271,7 +291,154 @@ bool CardGame::playRandomLegalCard(int player) {
 }
 
 void CardGame::setBid(int number, int suit) {
-	bid[0] = number;
-	bid[1] = suit;
-	trumpSuit = suit;
+	if (nBids == 0 ||
+			suit == PASS || suit == DOUBLE ||
+			number > bid[0] || // next level
+		 (number == bid[0] && suit > bid[1])) { // higher suit
+		
+		// TODO: move to begin of playing
+		if (suit != PASS && suit != DOUBLE) {
+			bid[0] = number;
+			bid[1] = suit;
+			trumpSuit = suit;
+		}
+		
+		bidHistory[nBids][0] = number;
+		bidHistory[nBids++][1] = suit;
+	} else {
+		// spit out some error message
+		cerr << "cannot bid under current bid" << endl;
+	}
+}
+
+Card *CardGame::chooseCard(int player)  {
+	Player *p = getPlayer(player);
+	Player *d = p->partner;
+	int trumpsLeft = 13 - discardCardsBySuit[trumpSuit];
+
+	if (turn == 0) {
+	//	if (p->role == DECLARER) {
+			// remember to set in player class!
+			// i have trumps and others still have trumps,
+			// so play lowest trump suit
+			if (p->nCardsBySuit[trumpSuit] > 0 &&
+					trumpsLeft - p->nCardsBySuit[trumpSuit] - d->nCardsBySuit[trumpSuit] > 0) {
+				return chooseLowest(player, trumpSuit);
+			// TODO: let partner rough trump
+			 //else if (d->nCardsBySuit[trumpSuit] > 0 && (suit = ))
+		} else {
+			return chooseJunk(player);
+		}
+	//	}
+	} else if (turn == 1) {
+		// TODO: finesses
+		// play lowest card of lead suit
+		if (p->nCardsBySuit[leadSuit] > 0) {
+			return chooseLowest(player, leadSuit);
+		// rough a trick
+		} else if (p->nCardsBySuit[trumpSuit] > 0) {
+			return chooseLowest(player, trumpSuit);
+		// discard junk
+		} else {
+			return chooseJunk(player);
+		}
+	} else if (turn == 2) {
+		// play highest card of lead suit
+		if (p->nCardsBySuit[leadSuit] > 0) {
+			return chooseHighest(player, leadSuit);
+		// rough a trick (if your partner isn't winning)
+		} else if (d != winningPlayer && p->nCardsBySuit[trumpSuit] > 0) {
+			return chooseLowestWinning(player, trumpSuit);
+		// discard junk
+		} else {
+			return chooseJunk(player);
+		}
+	} else if (turn == 3) {
+		// play highest card of lead suit
+		if (p->nCardsBySuit[leadSuit] > 0) {
+			return chooseHighest(player, leadSuit);
+		// rough a trick (if your partner isn't winning)
+		// TODO: rough a roughed trick
+		} else if (d != winningPlayer && p->nCardsBySuit[trumpSuit] > 0) {
+			return chooseLowestWinning(player, trumpSuit);
+		// discard junk
+		} else {
+			return chooseJunk(player);
+		}			
+	}
+
+	return NULL;
+} 
+
+Card *CardGame::chooseLowest(int player, int suit) {
+	Player *p = getPlayer(player);
+	Card *lowestSoFar = NULL;
+
+	for (int i = 0; i < FULL_HAND_LENGTH; i++) {
+		if (p->hand[i] == NULL)
+			continue;
+		else if (p->hand[i]->suit == suit && 
+						(lowestSoFar == NULL || p->hand[i]->number < lowestSoFar->number))
+			lowestSoFar = p->hand[i];
+	}
+
+	return lowestSoFar;
+}
+
+Card *CardGame::chooseLowestWinning(int player, int suit) {
+	Player *p = getPlayer(player);
+	Card *lowestSoFar = NULL;
+
+	for (int i = 0; i < FULL_HAND_LENGTH; i++) {
+		if (p->hand[i] == NULL)
+			continue;
+		else if (p->hand[i]->suit == suit &&
+						 winningTrick(p->hand[i]) &&
+						(lowestSoFar == NULL || p->hand[i]->number < lowestSoFar->number))
+			lowestSoFar = p->hand[i];
+	}
+	
+	if (!lowestSoFar)
+		return chooseJunk(player);
+
+	return lowestSoFar;
+}
+
+Card *CardGame::chooseHighest(int player, int suit) {
+	Player *p = getPlayer(player);
+	Card *highestSoFar = NULL;
+
+	for (int i = 0; i < FULL_HAND_LENGTH; i++) {
+		if (p->hand[i] == NULL)
+			continue;
+		else if (p->hand[i]->suit == suit && 
+						(highestSoFar == NULL || p->hand[i]->number > highestSoFar->number))
+			highestSoFar = p->hand[i];
+	}
+
+	return highestSoFar;
+}
+
+Card *CardGame::chooseJunk(int player) {
+	Player *p = getPlayer(player);
+
+	// find longest suit
+	int longestSuit = -1;
+	int longestSuitLength = 1;
+
+	for (int i = 0; i < 4; i++) {
+		if (i == trumpSuit)
+			continue;
+
+		if (p->nCardsBySuit[i] >= longestSuitLength) {
+			longestSuit = i;
+			longestSuitLength = p->nCardsBySuit[i];
+		}
+	}
+
+	// only trumps left
+	if (longestSuit == -1)
+		return chooseLowest(player, trumpSuit);
+
+	return chooseLowest(player, longestSuit);
 }

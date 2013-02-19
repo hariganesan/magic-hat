@@ -11,24 +11,24 @@
 			"file": "main.cpp",
 			"settings":
 			{
-				"buffer_size": 8170,
+				"buffer_size": 10927,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "Player.cpp",
+			"file": "CardGame.cpp",
 			"settings":
 			{
-				"buffer_size": 5271,
+				"buffer_size": 5585,
 				"line_ending": "Unix",
 				"name": "// Hari Ganesan 1/17/13"
 			}
 		},
 		{
-			"file": "Player.hpp",
+			"file": "CardGame.hpp",
 			"settings":
 			{
-				"buffer_size": 1659,
+				"buffer_size": 1774,
 				"line_ending": "Unix",
 				"name": "// Hari Ganesan 1/24/13"
 			}
@@ -37,15 +37,15 @@
 			"file": "Makefile",
 			"settings":
 			{
-				"buffer_size": 411,
+				"buffer_size": 477,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "docs/Notes.md",
+			"file": "Elements.hpp",
 			"settings":
 			{
-				"buffer_size": 303,
+				"buffer_size": 437,
 				"line_ending": "Unix"
 			}
 		}
@@ -78,6 +78,10 @@
 	},
 	"file_history":
 	[
+		"/Users/Hari/scm/magic-hat/Elements.cpp",
+		"/Users/Hari/scm/magic-hat/docs/Notes.md",
+		"/Users/Hari/scm/magic-hat/a.out",
+		"/Users/Hari/scm/magic-hat/main.cpp",
 		"/Users/Hari/scm/yale-tetris/Grid.cpp",
 		"/Users/Hari/scm/yale-tetris/Grid.h",
 		"/Users/Hari/scm/yale-tetris/Makefile",
@@ -120,6 +124,16 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"4",
+			"0",
+			"bid",
+			"number",
+			"WHITE",
+			"20",
+			"int",
+			"DEFAULT",
+			"x",
+			"Player",
 			"fontColor",
 			"10",
 			"playerNu",
@@ -237,17 +251,7 @@
 			"BLOCK_WIDTH",
 			"25",
 			";\n	}",
-			"cas",
-			"case 0:",
-			" =",
-			"grid[",
-			"grid[0]",
-			"space",
-			"tab",
-			"octhecdec",
-			"initia",
-			"random_",
-			"overlap"
+			"cas"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -273,15 +277,15 @@
 					"file": "main.cpp",
 					"settings":
 					{
-						"buffer_size": 8170,
+						"buffer_size": 10927,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7897,
-								7897
+								6050,
+								6050
 							]
 						],
 						"settings":
@@ -290,25 +294,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1932.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "Player.cpp",
+					"file": "CardGame.cpp",
 					"settings":
 					{
-						"buffer_size": 5271,
+						"buffer_size": 5585,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2748,
-								2748
+								5336,
+								5431
 							]
 						],
 						"settings":
@@ -325,18 +329,18 @@
 				},
 				{
 					"buffer": 2,
-					"file": "Player.hpp",
+					"file": "CardGame.hpp",
 					"settings":
 					{
-						"buffer_size": 1659,
+						"buffer_size": 1774,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								518,
-								518
+								1199,
+								1199
 							]
 						],
 						"settings":
@@ -356,15 +360,15 @@
 					"file": "Makefile",
 					"settings":
 					{
-						"buffer_size": 411,
+						"buffer_size": 477,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								49,
-								411
+								283,
+								283
 							]
 						],
 						"settings":
@@ -379,23 +383,23 @@
 				},
 				{
 					"buffer": 4,
-					"file": "docs/Notes.md",
+					"file": "Elements.hpp",
 					"settings":
 					{
-						"buffer_size": 303,
+						"buffer_size": 437,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								303,
-								303
+								386,
+								386
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+							"syntax": "Packages/C++/C++.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,

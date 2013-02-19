@@ -3,6 +3,7 @@
 
 #include "SDL/SDL.h"
 #include "SDL/SDL_mixer.h"
+#include "SDL/SDL_image.h"
 #include "SDL/SDL_opengl.h"
 #include "SDL_ttf/SDL_ttf.h"
 #include <iostream>
@@ -28,6 +29,7 @@ using namespace std;
 void runGame();
 void render(CardGame *g);
 void SDL_GL_RenderText(const char *text, SDL_Color color, SDL_Rect *location);
+void SDL_GL_RenderPNG(const char *image, SDL_Rect *location);
 void toggleMusic(); // toggles music on and off
 
 int main(int argc, char **argv) {
@@ -91,12 +93,12 @@ void runGame() {
 		}
 	}
 
-	// navigation buttons
-	Button *play = new Button(400, 400, 50, 25);
+	// pass
+	Button *BTN_pass = new Button(150, 300, 50, 25);
+	Button *BTN_double = new Button(250, 300, 50, 25);
 
-	//g->dealCards();
-	//g->display = PLAYING;
-	//g->setTrumpSuit(NOTRUMP);
+	// navigation buttons
+	Button *BTN_play = new Button(650, 400, 50, 25);
 
 	// event bools
 	SDL_Event event;
@@ -117,19 +119,26 @@ void runGame() {
 						default: ;
 					}
 				case SDL_MOUSEBUTTONDOWN:
-					if (event.button.button == SDL_BUTTON_LEFT) {
+					if (event.button.button == SDL_BUTTON_LEFT && g->display == BIDDING) {
 						for (int i = 0; i < 5; i++) {
 							for (int j = 0; j < 7; j++) {
 								if (bids[i][j]->handleEvents(event.button.x, event.button.y)) {
-									g->setBid(j, i);
+									g->setBid(j+1, i);
 									bidSet = true;
-								} else if (play->handleEvents(event.button.x, event.button.y)) {
-									if (g->display == BIDDING && bidSet) {
-										g->display = PLAYING;
-										g->dealCards();
-									}
 								}
 							}
+						}
+						if (BTN_play->handleEvents(event.button.x, event.button.y)) {
+							if (bidSet) {
+								g->display = PLAYING;
+								g->dealCards();
+							}
+						} else if (BTN_pass->handleEvents(event.button.x, event.button.y)) {
+							g->setBid(-1, PASS);
+							bidSet = true;
+						} else if (BTN_double->handleEvents(event.button.x, event.button.y)) {
+							g->setBid(-1, DOUBLE);
+							bidSet = true;
 						}
 					}
 					break;
@@ -144,7 +153,9 @@ void runGame() {
 				cardsOnFelt = 0;
 				playerTurn = g->leadPlayer->name;
 			} else {
-				g->playRandomLegalCard(playerTurn);
+				//g->playRandomLegalCard(playerTurn);
+				Card *c = g->chooseCard(playerTurn);
+				g->playCard(playerTurn, c);
 				cardsOnFelt++;
 				
 				if (++playerTurn >= 4) {
@@ -160,14 +171,17 @@ void runGame() {
 	}
 }
 
+// possible arguments for glBegin(): GL_POINTS, GL_LINES, GL_LINE_STRIP, 
+// GL_LINE_LOOP, GL_QUADS, GL_TRIANGLES, GL_POLYGON
 void render(CardGame *g) {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glPushMatrix();
 	// TODO: change to 0,1 for depth
 	glOrtho(0, WINDOW_WIDTH, WINDOW_HEIGHT, 0, -1, 1); // set matrix
-	SDL_Color TEXT_WHITE = {200, 200, 200};
+	SDL_Color TEXT_WHITE = {220, 220, 220};
+	SDL_Color TEXT_GRAY = {150, 150, 150};
 	//SDL_Color TEXT_BLACK = {20, 20, 20};
-	SDL_Color TEXT_RED = {150, 0, 0};
+	SDL_Color TEXT_RED = {200, 0, 0};
 	SDL_Rect location;
 	Player *p;
 
@@ -186,18 +200,45 @@ void render(CardGame *g) {
 
 	if (g->display == BIDDING) {
 
+		// sample card
+		location.x = 50;
+		location.y = 50;
+		//SDL_GL_RenderPNG("assets/images/test/1.png", &location);
+
+
+
+
 		// BIDDING BOX
 
 		location.x = 100;
 		location.y = 100;
 		stringstream ss;
+		glColor4ub(200, 200, 200, 255);
 		for (int i = 0; i < 7; i++) {
 			for (int j = 0; j < 5; j++) {
+				// draw boxes
+				glBegin(GL_LINE_LOOP);
+				glVertex2f(location.x, location.y);
+				glVertex2f(location.x+BID_BUTTON_WIDTH, location.y);
+				glVertex2f(location.x+BID_BUTTON_WIDTH, location.y+BID_BUTTON_HEIGHT);
+				glVertex2f(location.x, location.y+BID_BUTTON_HEIGHT);
+				glEnd();
+
+				// render bids
 				ss << i+1;
-				SDL_GL_RenderText(ss.str().c_str(), TEXT_WHITE, &location);
-				location.x += 20;
-				SDL_GL_RenderText(g->getSuit(j), TEXT_WHITE, &location);
-				location.x += 30;
+				if (i+1 > g->bid[0] || // next level
+		 			 (i+1 == g->bid[0] && j > g->bid[1])) { // higher suit
+					SDL_GL_RenderText(ss.str().c_str(), TEXT_WHITE, &location);
+					location.x += 20;
+					SDL_GL_RenderText(g->getSuit(j), TEXT_WHITE, &location);
+					location.x += 30;
+				} else {
+					// grayed out bids
+					SDL_GL_RenderText(ss.str().c_str(), TEXT_GRAY, &location);
+					location.x += 20;
+					SDL_GL_RenderText(g->getSuit(j), TEXT_GRAY, &location);
+					location.x += 30;					
+				}
 				ss.str("");
 				ss.clear();
 			}
@@ -205,8 +246,53 @@ void render(CardGame *g) {
 			location.x -= 5*(20+30);
 		}
 
+		// BID TABLE
+		location.x = 450;
+		location.y = 100;
+		SDL_GL_RenderText("W", TEXT_RED, &location);
+		location.x += 50;
+		SDL_GL_RenderText("N", TEXT_RED, &location);
+		location.x += 50;
+		SDL_GL_RenderText("E", TEXT_RED, &location);
+		location.x += 50;
+		SDL_GL_RenderText("S", TEXT_RED, &location);
+
+		int bidder = g->dealer->name;
+		location.y += 30;
+		for (int i = 0; ;i++) {
+			if (g->bidHistory[i][1] == -1) {
+				break;
+			}
+
+			location.x = bidder*50 + 450;
+			if (g->bidHistory[i][1] == PASS) {
+				SDL_GL_RenderText("PASS", TEXT_WHITE, &location);
+			} else if (g->bidHistory[i][1] == DOUBLE) {
+				SDL_GL_RenderText("DBLE", TEXT_WHITE, &location);
+			} else {
+				ss << g->bidHistory[i][0];
+				SDL_GL_RenderText(ss.str().c_str(), TEXT_WHITE, &location);
+				location.x += 20;
+				SDL_GL_RenderText(g->getSuit(g->bidHistory[i][1]), TEXT_WHITE, &location);
+				ss.str("");
+				ss.clear();
+			}
+			
+			if (++bidder == NUM_PLAYERS) {
+				bidder = 0;
+				location.y += 25;
+			}
+		}
+
 		// NAVIGATION
-		location.x = 400;
+		location.x = 150;
+		location.y = 300;
+		SDL_GL_RenderText("Pass", TEXT_WHITE, &location);		
+		location.x = 250;
+		location.y = 300;
+		SDL_GL_RenderText("Double", TEXT_WHITE, &location);		
+
+		location.x = 650;
 		location.y = 400;
 		SDL_GL_RenderText("Play!", TEXT_WHITE, &location);
 
@@ -228,10 +314,10 @@ void render(CardGame *g) {
 				SDL_GL_RenderText(g->getSuit(p->hand[i]->suit), TEXT_WHITE, &location);
 				location.y += 25;
 				location.x -= 20;
-			}	
+			}
 		}
 
-		// player 1
+		// qplayer 1
 		p = g->getPlayer(1);
 		location.x = 80;
 		location.y = 50;
@@ -306,17 +392,20 @@ void render(CardGame *g) {
 		stringstream ss;
 		for (int i = 0; i < NUM_PLAYERS; i++) {
 			p = g->getPlayer(i);
-			ss << p->tricks;
+			ss << p->nTricks;
 			SDL_GL_RenderText(ss.str().c_str(), TEXT_RED, &location);
 			location.x += 150;
 			ss.str("");
 			ss.clear();
 		}
 
+		ss << g->bid[0];
 		location.x = 700;
-		SDL_GL_RenderText(g->getNumber(g->bid[0]), TEXT_RED, &location);
+		SDL_GL_RenderText(ss.str().c_str(), TEXT_RED, &location);
 		location.x += 20;
 		SDL_GL_RenderText(g->getSuit(g->bid[1]), TEXT_RED, &location);
+		ss.str("");
+		ss.clear();
 	}
 
 	////////////////
@@ -393,6 +482,104 @@ void SDL_GL_RenderText(const char *text, SDL_Color color, SDL_Rect *location) {
 	SDL_FreeSurface(initial);
 	SDL_FreeSurface(intermediary);
 	glDeleteTextures(1, &texture);
+}
+
+void SDL_GL_RenderPNG(const char *image, SDL_Rect *location) {
+	SDL_Surface *surface;
+	GLenum texture_format;
+	GLint nColors;
+	GLuint texture;
+
+	int w,h;
+
+	if ((surface = IMG_Load(image))) {
+		w = surface->w;
+		h = surface->h;
+
+		// check for powers of 2
+		if ((w & (w - 1)) != 0) {
+			cerr << "warning: " << image << "'s width is not power of 2" << endl;
+		}
+		if ((h & (h - 1)) != 0) {
+			cerr << "warning: " << image << "'s height is not power of 2" << endl;
+		}
+
+		// get number of channels in SDL surface
+		nColors = surface->format->BytesPerPixel;
+		if (nColors == 4) { // contains alpha
+			if (surface->format->Rmask == 0x000000ff)
+				texture_format = GL_RGBA;
+		} else if (nColors == 3) { // no alpha channel
+			if (surface->format->Rmask == 0x000000ff)
+				texture_format = GL_RGB;
+		} else {
+			cerr << "warning: the image is not truecolor..";
+			cerr << "this will probably break" << endl;
+      // this error should not go unhandled
+		}
+
+    // Have OpenGL generate a texture object handle for us
+    glGenTextures( 1, &texture );
+
+    // Bind the texture object
+    glBindTexture( GL_TEXTURE_2D, texture );
+
+    // Set the texture's stretching properties
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+    // Edit the texture object's image data using the information SDL_Surface gives us
+    glTexImage2D( GL_TEXTURE_2D, 0, nColors, w, h, 0,
+                      texture_format, GL_UNSIGNED_BYTE, surface->pixels );
+	} else {
+		cerr << "SDL could not load " << image << ":" << SDL_GetError() << endl;
+		return;
+	}    
+
+	// Free the SDL_Surface only if it was successfully created
+	if ( surface ) { 
+		SDL_FreeSurface( surface );
+	}
+
+	// enable blending
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glEnable(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, texture); 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Use nice (linear) scaling 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Use nice (linear) scaling
+
+	glBegin (GL_QUADS);
+
+	/*
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	if (texturesOn) glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(4.3f, -3.5f, 0.0f); //bottom left
+
+	if (texturesOn) glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(5.3f, -3.5f, 0.0f); //bottom right
+
+	if (texturesOn) glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(5.3f, -4.5f, 0.0f); //top right
+
+	if (texturesOn) glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(4.3f, -4.5f, 0.0f); //top left
+*/
+
+	glTexCoord2f(0.0f, 0.0f); 
+	glVertex2f(location->x    , location->y);
+	glTexCoord2f(1.0f, 0.0f); 
+	glVertex2f(location->x + w, location->y);
+	glTexCoord2f(1.0f, 1.0f); 
+	glVertex2f(location->x + w, location->y + h);
+	glTexCoord2f(0.0f, 1.0f); 
+	glVertex2f(location->x    , location->y + h);
+	glEnd();
+
+	glDisable(GL_TEXTURE_2D);
+
 }
 
 void toggleMusic() {

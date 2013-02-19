@@ -17,7 +17,9 @@ enum {
 	HEARTS,
 	DIAMONDS,
 	CLUBS,
-	NOTRUMP
+	NOTRUMP,
+	PASS,
+	DOUBLE
 };
 
 enum {
@@ -58,22 +60,27 @@ struct Card {
 	}
 };
 
-struct Player {
+class Player {
+public:
 	Card *hand[FULL_HAND_LENGTH];
-	int numCards;
 	int name;
 	int role;
-	int tricks;
 	int difficulty;
+	Player *partner;
+
+	// keep track of cards for each suit
+	int nCards;
+	int nCardsBySuit[4];
+	int nTricks;
 	int hcp;
 
-	Player(int n) {
-		role = 0;
-		tricks = 0;
-		difficulty = 0;
-		numCards = 0;
-		hcp = 0;
+	Player(int n) : role(0), difficulty(0), nCards(0), nTricks(0), hcp(0) {
 		name = n;
+		partner = NULL;
+
+		for (int i = 0; i < 4; i++) {
+			nCardsBySuit[i] = 0;
+		}
 
 		for (int i = 0; i < FULL_HAND_LENGTH; i++) {
 			hand[i] = NULL;			
@@ -88,13 +95,18 @@ class CardGame {
 	int leadSuit;
 	int trumpSuit;
 	int score[2];
+	int turn;
 	Card *deck[DECK_SIZE];
 	Card *discard[DECK_SIZE];
+	int discardCardsBySuit[4];
 	Card *felt[NUM_PLAYERS];
 
 public:
 	int display;
+	int nBids;
 	int bid[2];
+	int bidHistory[60][2];
+	Player *dealer;
 	Player *leadPlayer;
 
 	CardGame();
@@ -105,7 +117,6 @@ public:
 	const char *getNumber(int number);
 	Player *getPlayer(int player);
 	Card **getFelt();
-	//void playCard(int player, int suit, int number);
 	void playCard(int player, Card *card);
 	bool winningTrick(Card *card); // checks to see if card is winning trick
 	void clearFelt();
@@ -114,4 +125,9 @@ public:
 	bool playRandomCard(int player);
 	bool playRandomLegalCard(int player);
 	void setBid(int number, int suit);
+	Card *chooseCard(int player);
+	Card *chooseLowest(int player, int suit);
+	Card *chooseLowestWinning(int player, int suit);
+	Card *chooseHighest(int player, int suit);
+	Card *chooseJunk(int player);
 };
