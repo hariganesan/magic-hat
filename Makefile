@@ -7,20 +7,19 @@ CFLAGS=-pedantic -Wall -I/sw/include -L/sw/lib
 SDL=-lSDLmain -lSDL -lSDL_ttf -lSDL_mixer -lSDL_image
 COCOA=-framework Cocoa
 GL=-framework OpenGL -L/sw/lib
+SRC=src
+MAIN=src/main
 
-all: main clean
+all: $(SRC)/*.o main clean
 
 # build main
-main: main.o CardGame.o Elements.o
+main: main.o Render.o BridgeGame.o CardGame.o Elements.o
 	$(CC) -o $@ $(COCOA) $(GL) $(SDL) $^
 
-main.o: main.cpp
+$(SRC)/*.o: $(SRC)/*.cpp
 	$(CC) $(CFLAGS) -c $^
 
-CardGame.o: CardGame.cpp
-	$(CC) $(CFLAGS) -c $^
-
-Elements.o: Elements.cpp
+main.o: $(MAIN)/*.cpp
 	$(CC) $(CFLAGS) -c $^
 
 clean:

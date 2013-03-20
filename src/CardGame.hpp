@@ -89,6 +89,7 @@ public:
 };
 
 class CardGame {
+protected:
 	Player *players[NUM_PLAYERS];
 	Player *winningPlayer; // player currently winning hand
 	Card *winningCard; // card currently winning trick
@@ -106,22 +107,36 @@ public:
 	int nBids;
 	int bid[2];
 	int bidHistory[60][2];
+	int consecutivePasses;
 	Player *dealer;
 	Player *leadPlayer;
 
 	CardGame();
 	~CardGame();
+	void beginPlay();
 	void dealCards();
 	Card *getCard();
 	const char *getSuit(int suit);
 	const char *getNumber(int number);
 	Player *getPlayer(int player);
 	Card **getFelt();
-	void playCard(int player, Card *card);
-	bool winningTrick(Card *card); // checks to see if card is winning trick
 	void clearFelt();
 	void printHand(int player);
 	void drawHand(int player, int y_location);
+};
+
+class BridgeGame: public CardGame {
+	int leadSuit;
+	int trumpSuit;
+public:
+	int nBids;
+	int bid[2];
+	int bidHistory[60][2];
+	int consecutivePasses;
+
+	BridgeGame();
+	void playCard(int player, Card *card);
+	bool winningTrick(Card *card); // checks to see if card is winning trick
 	bool playRandomCard(int player);
 	bool playRandomLegalCard(int player);
 	void setBid(int number, int suit);

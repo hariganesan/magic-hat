@@ -1,19 +1,32 @@
 Notes
 =======
 
-- bidding
-	- double and pass legality
-
 - setting up new render file
 	- how to split up rendering? look up
 - making constants for each location, where to put?
 
+
+- making use for testing
+	- role, hand, bid
+
+- make default choices for hands
+
+- AI
+	- if partner is winning, then duck?
+	- you could duck if your card is higher than partners (10 vs J)
+	- if opponent is out of suit (no trumps) then keep playing it
+
+
+Completed
+=============
+
+- dividing into roles
+- pass/double enhancement
+- contract vs noncontract split
 - split up card game into bridge game
 
-- what to do with bidHistory
-- how to take passes and doubles (are they bids?)
+On The Back Burner
+==============
 
+- delete allocated memory
 - improving choosing junk
-
-- rendering pngs vs text - which is faster?
-	- load once?

@@ -11,7 +11,7 @@
 			"file": "main.cpp",
 			"settings":
 			{
-				"buffer_size": 10927,
+				"buffer_size": 15356,
 				"line_ending": "Unix"
 			}
 		},
@@ -19,33 +19,33 @@
 			"file": "CardGame.cpp",
 			"settings":
 			{
-				"buffer_size": 5585,
+				"buffer_size": 3473,
 				"line_ending": "Unix",
 				"name": "// Hari Ganesan 1/17/13"
+			}
+		},
+		{
+			"file": "BridgeGame.cpp",
+			"settings":
+			{
+				"buffer_size": 8421,
+				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "CardGame.hpp",
 			"settings":
 			{
-				"buffer_size": 1774,
+				"buffer_size": 2400,
 				"line_ending": "Unix",
 				"name": "// Hari Ganesan 1/24/13"
 			}
 		},
 		{
-			"file": "Makefile",
+			"file": "docs/Notes.md",
 			"settings":
 			{
-				"buffer_size": 477,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "Elements.hpp",
-			"settings":
-			{
-				"buffer_size": 437,
+				"buffer_size": 617,
 				"line_ending": "Unix"
 			}
 		}
@@ -78,6 +78,8 @@
 	},
 	"file_history":
 	[
+		"/Users/Hari/scm/magic-hat/Makefile",
+		"/Users/Hari/scm/magic-hat/Elements.hpp",
 		"/Users/Hari/scm/magic-hat/Elements.cpp",
 		"/Users/Hari/scm/magic-hat/docs/Notes.md",
 		"/Users/Hari/scm/magic-hat/a.out",
@@ -124,6 +126,19 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"CardGame",
+			"Bridge",
+			"CardGame",
+			"History[nBids-1]",
+			"GRAY",
+			"nOfColors",
+			"surface->h",
+			"surface->w",
+			"    ",
+			"nCardsBySuit",
+			"Card(",
+			"Card",
+			"lowest",
 			"4",
 			"0",
 			"bid",
@@ -238,20 +253,7 @@
 			"BLOCK",
 			"Block",
 			"BLOCK",
-			"Block",
-			"block",
-			"Block",
-			"FULL_BLOCK",
-			"MAX",
-			"MAX_BLOCK_DIM",
-			"BLOCK_DIM",
-			", ",
-			"BLOCK_DIM+i",
-			"BLOCK_DIM+j",
-			"BLOCK_WIDTH",
-			"25",
-			";\n	}",
-			"cas"
+			"Block"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -269,7 +271,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -277,15 +279,15 @@
 					"file": "main.cpp",
 					"settings":
 					{
-						"buffer_size": 10927,
+						"buffer_size": 15356,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6050,
-								6050
+								607,
+								607
 							]
 						],
 						"settings":
@@ -304,15 +306,15 @@
 					"file": "CardGame.cpp",
 					"settings":
 					{
-						"buffer_size": 5585,
+						"buffer_size": 3473,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5336,
-								5431
+								125,
+								125
 							]
 						],
 						"settings":
@@ -329,18 +331,45 @@
 				},
 				{
 					"buffer": 2,
-					"file": "CardGame.hpp",
+					"file": "BridgeGame.cpp",
 					"settings":
 					{
-						"buffer_size": 1774,
+						"buffer_size": 8421,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1199,
-								1199
+								8421,
+								8421
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4850.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "CardGame.hpp",
+					"settings":
+					{
+						"buffer_size": 2400,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1974,
+								1974
 							]
 						],
 						"settings":
@@ -350,56 +379,30 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "Makefile",
-					"settings":
-					{
-						"buffer_size": 477,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								283,
-								283
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Makefile/Makefile.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1756.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "Elements.hpp",
+					"file": "docs/Notes.md",
 					"settings":
 					{
-						"buffer_size": 437,
+						"buffer_size": 617,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								386,
-								386
+								529,
+								529
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/C++/C++.tmLanguage"
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
