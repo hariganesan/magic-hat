@@ -16,7 +16,7 @@ Card *BridgeGame::chooseCard(int player)  {
 			if (p->nCardsBySuit[trumpSuit] > 0 &&
 					trumpsLeft - p->nCardsBySuit[trumpSuit] - d->nCardsBySuit[trumpSuit] > 0) {
 				return chooseLowest(player, trumpSuit);
-			// TODO: let partner rough trump
+			// TODO: let partner ruff trump
 			 //else if (d->nCardsBySuit[trumpSuit] > 0 && (suit = ))
 			} else {
 				return chooseJunk(player);
@@ -59,17 +59,13 @@ Card *BridgeGame::chooseCard(int player)  {
 		}
 	} else if (p->role == DEFENDER_ONE || p->role == DEFENDER_TWO) {
 		if (turn == 0) {
-			// remember to set in player class!
-			// i have trumps and others still have trumps,
-			// so play lowest trump suit
-			if (p->nCardsBySuit[trumpSuit] > 0 &&
-					trumpsLeft - p->nCardsBySuit[trumpSuit] - d->nCardsBySuit[trumpSuit] > 0) {
-				return chooseLowest(player, trumpSuit);
-			// TODO: let partner rough trump
-			 //else if (d->nCardsBySuit[trumpSuit] > 0 && (suit = ))
-			} else {
-				return chooseJunk(player);
-			}
+			// opening lead
+			// if you or partner made bid, then play that suit
+			// if opponent made bid, do not play that suit
+
+			// return 4th highest card of longest suit
+			return chooseNthHighestCardBySuit(player, chooseLongestSuit(player), 4);
+
 		} else if (turn == 1) {
 			// TODO: finesses
 			// play lowest card of lead suit
@@ -167,7 +163,7 @@ Card *BridgeGame::chooseHighest(int player, int suit) {
 Card *BridgeGame::chooseJunk(int player) {
 	Player *p = getPlayer(player);
 
-	// find longest suit
+	// find longest non-trump suit
 	int longestSuit = -1;
 	int longestSuitLength = 1;
 
@@ -186,4 +182,33 @@ Card *BridgeGame::chooseJunk(int player) {
 		return chooseLowest(player, trumpSuit);
 
 	return chooseLowest(player, longestSuit);
+}
+
+int BridgeGame::chooseLongestSuit(int player) {
+	int longestSuit = -1;
+	int longestSuitLength = 1;
+
+	for (int i = 0; i < 4; i++) {
+		if (p->nCardsBySuit[i] >= longestSuitLength) {
+			longestSuit = i;
+			longestSuitLength = p->nCardsBySuit[i];
+		}
+	}
+
+	return longestSuit;
+}
+
+// assuming cards are in order from highest to lowest
+Card *BridgeGame::chooseNthHighestCardBySuit(int player, int suit, int n) {
+	for (int i = 0; i < FULL_HAND_LENGTH; i++) {
+		if (p->hand[i] == NULL)
+			continue;
+		else if (p->hand[i]->suit == suit) {
+			if (--n <= 0) {
+				return p->hand[i];
+			}
+		}
+	}
+
+	return NULL;
 }
