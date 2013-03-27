@@ -7,48 +7,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "main.cpp",
-			"settings":
-			{
-				"buffer_size": 15356,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "CardGame.cpp",
-			"settings":
-			{
-				"buffer_size": 3473,
-				"line_ending": "Unix",
-				"name": "// Hari Ganesan 1/17/13"
-			}
-		},
-		{
-			"file": "BridgeGame.cpp",
-			"settings":
-			{
-				"buffer_size": 8421,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "CardGame.hpp",
-			"settings":
-			{
-				"buffer_size": 2400,
-				"line_ending": "Unix",
-				"name": "// Hari Ganesan 1/24/13"
-			}
-		},
-		{
-			"file": "docs/Notes.md",
-			"settings":
-			{
-				"buffer_size": 617,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -78,12 +36,18 @@
 	},
 	"file_history":
 	[
+		"/Users/Hari/scm/magic-hat/src/Render.cpp",
+		"/Users/Hari/scm/magic-hat/src/main.cpp",
+		"/Users/Hari/scm/magic-hat/src/Render.hpp",
 		"/Users/Hari/scm/magic-hat/Makefile",
+		"/Users/Hari/scm/magic-hat/docs/Notes.md",
+		"/Users/Hari/scm/magic-hat/CardGame.hpp",
+		"/Users/Hari/scm/magic-hat/main.cpp",
+		"/Users/Hari/scm/magic-hat/BridgeGame.cpp",
+		"/Users/Hari/scm/magic-hat/CardGame.cpp",
 		"/Users/Hari/scm/magic-hat/Elements.hpp",
 		"/Users/Hari/scm/magic-hat/Elements.cpp",
-		"/Users/Hari/scm/magic-hat/docs/Notes.md",
 		"/Users/Hari/scm/magic-hat/a.out",
-		"/Users/Hari/scm/magic-hat/main.cpp",
 		"/Users/Hari/scm/yale-tetris/Grid.cpp",
 		"/Users/Hari/scm/yale-tetris/Grid.h",
 		"/Users/Hari/scm/yale-tetris/Makefile",
@@ -271,145 +235,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "main.cpp",
-					"settings":
-					{
-						"buffer_size": 15356,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								607,
-								607
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "CardGame.cpp",
-					"settings":
-					{
-						"buffer_size": 3473,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								125,
-								125
-							]
-						],
-						"settings":
-						{
-							"auto_name": "// Hari Ganesan 1/17/13",
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "BridgeGame.cpp",
-					"settings":
-					{
-						"buffer_size": 8421,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								8421,
-								8421
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 4850.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "CardGame.hpp",
-					"settings":
-					{
-						"buffer_size": 2400,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1974,
-								1974
-							]
-						],
-						"settings":
-						{
-							"auto_name": "// Hari Ganesan 1/24/13",
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1756.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "docs/Notes.md",
-					"settings":
-					{
-						"buffer_size": 617,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								529,
-								529
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],
