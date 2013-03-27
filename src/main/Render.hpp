@@ -8,8 +8,8 @@
 #include "SDL_ttf/SDL_ttf.h"
 #include <iostream>
 #include <string>
-#include "CardGame.hpp"
-#include "Elements.hpp"
+#include "../CardGame.hpp"
+#include "../Elements.hpp"
 
 // window dimensions
 const int WINDOW_WIDTH = 800;

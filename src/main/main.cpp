@@ -1,7 +1,7 @@
 // Hari Ganesan 1/16/13
 // magic-hat: for card games (bridge)
 
-#include "Render.hpp"
+#include "Render.cpp"
 
 using namespace std;
 
