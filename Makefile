@@ -13,7 +13,7 @@ MAIN=src/main
 all: $(SRC)/*.o main clean
 
 # build main
-main: main.o BridgeGame.o CardGame.o Elements.o
+main: main.o Decisions.o BridgeGame.o CardGame.o Elements.o
 	$(CC) -o $@ $(COCOA) $(GL) $(SDL) $^
 
 $(SRC)/*.o: $(SRC)/*.cpp

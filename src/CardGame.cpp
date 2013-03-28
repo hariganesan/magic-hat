@@ -3,7 +3,7 @@
 
 #include "CardGame.hpp"
 
-CardGame::CardGame() : winningPlayer(NULL), turn(0) {
+CardGame::CardGame() : winningPlayer(NULL), turn(0), tricksTaken(0) {
 	// initialize players
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		Player *newPlayer = new Player(i);
@@ -152,6 +152,7 @@ Card **CardGame::getFelt() {
 }
 
 void CardGame::clearFelt() {
+	tricksTaken++; // TODO: remember to reset at start of new round!
 	winningPlayer->nTricks++;
 	leadPlayer = winningPlayer;
 	winningPlayer = NULL;

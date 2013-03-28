@@ -11,6 +11,7 @@ using namespace std;
 const int FULL_HAND_LENGTH = 13;
 const int DECK_SIZE = 52;
 const int NUM_PLAYERS = 4;
+const int MAXIMUM_BID_COUNT = 60;
 
 enum {
 	SPADES,
@@ -19,7 +20,8 @@ enum {
 	CLUBS,
 	NOTRUMP,
 	PASS,
-	DOUBLE
+	DOUBLE,
+	REDOUBLE
 };
 
 enum {
@@ -60,6 +62,21 @@ struct Card {
 	}
 };
 
+struct Bid {
+	int suit;
+	int number;
+	int player;
+	int round;
+	
+	//bool dble;
+	//bool redble;
+	//bool pass;
+
+	bool opening;
+	bool artificial;
+	int strength;
+};
+
 class Player {
 public:
 	Card *hand[FULL_HAND_LENGTH];
@@ -74,7 +91,7 @@ public:
 	int nTricks;
 	int hcp;
 
-	Player(int n) : role(0), difficulty(0), nCards(0), nTricks(0), hcp(0) {
+	Player(int n) : role(-1), difficulty(0), nCards(0), nTricks(0), hcp(0) {
 		name = n;
 		partner = NULL;
 
@@ -96,7 +113,8 @@ protected:
 	int leadSuit;
 	int trumpSuit;
 	int score[2];
-	int turn;
+	int turn; // player whose turn it is
+	int tricksTaken; // 0-12
 	Card *deck[DECK_SIZE];
 	Card *discard[DECK_SIZE];
 	int discardCardsBySuit[4];
@@ -104,10 +122,6 @@ protected:
 
 public:
 	int display;
-	int nBids;
-	int bid[2];
-	int bidHistory[60][2];
-	int consecutivePasses;
 	Player *dealer;
 	Player *leadPlayer;
 
@@ -130,19 +144,23 @@ class BridgeGame: public CardGame {
 	int trumpSuit;
 public:
 	int nBids;
-	int bid[2];
-	int bidHistory[60][2];
+	Bid *finalBid;
+	Bid *bidHistory[MAXIMUM_BID_COUNT];
 	int consecutivePasses;
 
 	BridgeGame();
+	void beginPlay();
 	void playCard(int player, Card *card);
 	bool winningTrick(Card *card); // checks to see if card is winning trick
 	bool playRandomCard(int player);
 	bool playRandomLegalCard(int player);
-	void setBid(int number, int suit);
+	void setBid(int player, int number, int suit);
 	Card *chooseCard(int player);
 	Card *chooseLowest(int player, int suit);
 	Card *chooseLowestWinning(int player, int suit);
 	Card *chooseHighest(int player, int suit);
 	Card *chooseJunk(int player);
+	int chooseLongestSuit(int player);
+	Card *chooseNthHighestCardBySuit(int player, int suit, int n);
+	int choosePreferredSuit(int player);
 };

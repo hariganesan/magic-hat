@@ -33,7 +33,6 @@ void render(BridgeGame *g) {
 	glEnd();
 
 	if (g->display == BIDDING) {
-
 		// sample card
 		location.x = 50;
 		location.y = 50;
@@ -60,8 +59,9 @@ void render(BridgeGame *g) {
 
 				// render bids
 				ss << i+1;
-				if (i+1 > g->bid[0] || // next level
-		 			 (i+1 == g->bid[0] && j > g->bid[1])) { // higher suit
+				if (g->finalBid == NULL ||
+						i+1 > g->finalBid->number || // next level
+		 			 (i+1 == g->finalBid->number && j > g->finalBid->suit)) { // higher suit
 					SDL_GL_RenderText(ss.str().c_str(), TEXT_WHITE, &location);
 					location.x += 20;
 					SDL_GL_RenderText(g->getSuit(j), TEXT_WHITE, &location);
@@ -93,21 +93,17 @@ void render(BridgeGame *g) {
 
 		int bidder = g->dealer->name;
 		location.y += 30;
-		for (int i = 0; ;i++) {
-			if (g->bidHistory[i][1] == -1) {
-				break;
-			}
-
+		for (int i = 0; g->bidHistory[i] != NULL; i++) {
 			location.x = bidder*50 + 450;
-			if (g->bidHistory[i][1] == PASS) {
+			if (g->bidHistory[i]->suit == PASS) {
 				SDL_GL_RenderText("PASS", TEXT_WHITE, &location);
-			} else if (g->bidHistory[i][1] == DOUBLE) {
+			} else if (g->bidHistory[i]->suit == DOUBLE) {
 				SDL_GL_RenderText("DBLE", TEXT_WHITE, &location);
 			} else {
-				ss << g->bidHistory[i][0];
+				ss << g->bidHistory[i]->number;
 				SDL_GL_RenderText(ss.str().c_str(), TEXT_WHITE, &location);
 				location.x += 20;
-				SDL_GL_RenderText(g->getSuit(g->bidHistory[i][1]), TEXT_WHITE, &location);
+				SDL_GL_RenderText(g->getSuit(g->bidHistory[i]->suit), TEXT_WHITE, &location);
 				ss.str("");
 				ss.clear();
 			}
@@ -233,11 +229,13 @@ void render(BridgeGame *g) {
 			ss.clear();
 		}
 
-		ss << g->bid[0];
+		// FINAL BID
+		
+		ss << g->finalBid->number;
 		location.x = 700;
 		SDL_GL_RenderText(ss.str().c_str(), TEXT_RED, &location);
 		location.x += 20;
-		SDL_GL_RenderText(g->getSuit(g->bid[1]), TEXT_RED, &location);
+		SDL_GL_RenderText(g->getSuit(g->finalBid->suit), TEXT_RED, &location);
 		ss.str("");
 		ss.clear();
 	}

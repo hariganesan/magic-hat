@@ -1,18 +1,38 @@
 // Hari Ganesan 3/7/13
 // bridgegame class for magic-hat
 
-#include "Decisions.cpp"
+#include "CardGame.hpp"
 
 BridgeGame::BridgeGame() : CardGame(), trumpSuit(-1), nBids(0), consecutivePasses(0) {
 	// set display to bidding
 	display = BIDDING;
-	bid[0] = -1;
-	bid[1] = -1;
 
 	//initialize bid history
-	for (int i = 0; i < 60; i++) {
-		bidHistory[i][0] = -1;
-		bidHistory[i][1] = -1;
+	finalBid = NULL;
+	for (int i = 0; i < MAXIMUM_BID_COUNT; i++)
+		bidHistory[i] = NULL;
+}
+
+void BridgeGame::beginPlay() {
+	display = PLAYING;
+	dealCards();
+
+	// decide roles based on bids
+	for (int i = 0; bidHistory[i] != NULL; i++) {
+		if (bidHistory[i]->suit == finalBid->suit &&
+			// make sure bid is made by player or partner!
+			 (bidHistory[i]->player == finalBid->player ||
+			 	bidHistory[i]->player == getPlayer(finalBid->player)->partner->name)) {
+			for (int j = 0; j < NUM_PLAYERS; j++) {
+				if (bidHistory[i]->player + j < NUM_PLAYERS) {
+					getPlayer(bidHistory[i]->player + j)->role = j;
+				} else {
+					getPlayer(bidHistory[i]->player + j - 4)->role = j;
+				}
+			}
+
+			break;
+		}
 	}
 }
 
@@ -117,25 +137,34 @@ bool BridgeGame::playRandomLegalCard(int player) {
 	return false;
 }
 
-void BridgeGame::setBid(int number, int suit) {
+void BridgeGame::setBid(int player, int number, int suit) {
 	if (nBids == 0 ||
 			suit == PASS || suit == DOUBLE ||
-			number > bid[0] || // next level
-		 (number == bid[0] && suit > bid[1])) { // higher suit
+			number > finalBid->number || // next level
+		 (number == finalBid->number && suit > finalBid->suit)) { // higher suit
 		
-		// TODO: move to begin of playing
+		bidHistory[nBids] = new Bid();
+		bidHistory[nBids]->player = player;
+		bidHistory[nBids]->number = number;
+		bidHistory[nBids]->suit = suit;
+
+		// TODO: need to make decisions!
+		bidHistory[nBids]->opening = false;
+		bidHistory[nBids]->artificial = false;
+		bidHistory[nBids]->strength = 0;
+
+				// TODO: move to begin of playing
 		if (suit != PASS && suit != DOUBLE) {
-			bid[0] = number;
-			bid[1] = suit;
+			finalBid = bidHistory[nBids];
 			trumpSuit = suit;
 
 			consecutivePasses = 0;
 		} else {
 			consecutivePasses++;
 		}
-		
-		bidHistory[nBids][0] = number;
-		bidHistory[nBids++][1] = suit;
+
+		nBids++;
+
 	} else {
 		// spit out some error message
 		cerr << "cannot bid under current bid" << endl;

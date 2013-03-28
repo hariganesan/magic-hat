@@ -98,7 +98,7 @@ void runGame() {
 						for (int i = 0; i < 5; i++) {
 							for (int j = 0; j < 7; j++) {
 								if (bids[i][j]->handleEvents(event.button.x, event.button.y)) {
-									g->setBid(j+1, i);
+									g->setBid(playerTurn, j+1, i);
 									bidSet = true;
 								}
 							}
@@ -108,10 +108,10 @@ void runGame() {
 								g->beginPlay();
 							}
 						} else if (BTN_pass->handleEvents(event.button.x, event.button.y)) {
-							g->setBid(-1, PASS);
+							g->setBid(playerTurn, -1, PASS);
 							bidSet = true;
 						} else if (BTN_double->handleEvents(event.button.x, event.button.y)) {
-							g->setBid(-1, DOUBLE);
+							g->setBid(playerTurn, -1, DOUBLE);
 							bidSet = true;
 						}
 					}

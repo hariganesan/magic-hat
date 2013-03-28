@@ -1,14 +1,15 @@
 Notes
 =======
 
-- setting up new render file
-	- how to split up rendering? look up
+- work on opening lead
+- make a preferred suit (heirarchy?)
+- bidHistory - each bid should also be:
+	- strong vs weak
+	- artificial or cue bids (michaels, gerber, blackwood, etc.)
+	- transfers
 - making constants for each location, where to put?
 
-
-- making use for testing
-	- role, hand, bid
-
+- roles
 - make default choices for hands
 
 - AI
@@ -19,7 +20,10 @@ Notes
 
 Completed
 =============
-
+- bid struct
+- choose more specific cards
+- decisions file
+- render file
 - dividing into roles
 - pass/double enhancement
 - contract vs noncontract split
@@ -28,5 +32,6 @@ Completed
 On The Back Burner
 ==============
 
+- png files
 - delete allocated memory
 - improving choosing junk

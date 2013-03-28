@@ -60,11 +60,15 @@ Card *BridgeGame::chooseCard(int player)  {
 	} else if (p->role == DEFENDER_ONE || p->role == DEFENDER_TWO) {
 		if (turn == 0) {
 			// opening lead
+			if (tricksTaken == 0) {
 			// if you or partner made bid, then play that suit
 			// if opponent made bid, do not play that suit
 
 			// return 4th highest card of longest suit
-			return chooseNthHighestCardBySuit(player, chooseLongestSuit(player), 4);
+				return chooseNthHighestCardBySuit(player, chooseLongestSuit(player), 4);
+			} else {
+				return chooseLowest(player, choosePreferredSuit(player));
+			}
 
 		} else if (turn == 1) {
 			// TODO: finesses
@@ -185,6 +189,8 @@ Card *BridgeGame::chooseJunk(int player) {
 }
 
 int BridgeGame::chooseLongestSuit(int player) {
+	Player *p = getPlayer(player);
+
 	int longestSuit = -1;
 	int longestSuitLength = 1;
 
@@ -200,6 +206,8 @@ int BridgeGame::chooseLongestSuit(int player) {
 
 // assuming cards are in order from highest to lowest
 Card *BridgeGame::chooseNthHighestCardBySuit(int player, int suit, int n) {
+	Player *p = getPlayer(player);
+
 	for (int i = 0; i < FULL_HAND_LENGTH; i++) {
 		if (p->hand[i] == NULL)
 			continue;
@@ -211,4 +219,13 @@ Card *BridgeGame::chooseNthHighestCardBySuit(int player, int suit, int n) {
 	}
 
 	return NULL;
+}
+
+int BridgeGame::choosePreferredSuit(int player) {
+	// start with all four suits...
+	// pick any team bids from bid history
+	// remove opponent bids and trump suit
+	// remove dummy strengths
+	// pick between partner leads/own strength
+	return chooseLongestSuit(player);
 }
