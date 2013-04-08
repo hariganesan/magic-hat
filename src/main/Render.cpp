@@ -147,7 +147,7 @@ void render(BridgeGame *g) {
 			}
 		}
 
-		// qplayer 1
+		// player 1
 		p = g->getPlayer(1);
 		location.x = 80;
 		location.y = 50;

@@ -13,6 +13,7 @@ const int DECK_SIZE = 52;
 const int NUM_PLAYERS = 4;
 const int MAXIMUM_BID_COUNT = 60;
 
+// suits and bids
 enum {
 	SPADES,
 	HEARTS,
@@ -90,6 +91,7 @@ public:
 	int nCardsBySuit[4];
 	int nTricks;
 	int hcp;
+	int honours;
 
 	Player(int n) : role(-1), difficulty(0), nCards(0), nTricks(0), hcp(0) {
 		name = n;
@@ -112,8 +114,8 @@ protected:
 	Card *winningCard; // card currently winning trick
 	int leadSuit;
 	int trumpSuit;
-	int score[2];
-	int turn; // player whose turn it is
+	int score[2]; // running tally
+	int turn; // player whose turn it is TODO: change to playerTurn
 	int tricksTaken; // 0-12
 	Card *deck[DECK_SIZE];
 	Card *discard[DECK_SIZE];

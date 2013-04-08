@@ -101,6 +101,7 @@ bool BridgeGame::winningTrick(Card *card) {
 	}
 }
 
+// deprecated
 bool BridgeGame::playRandomCard(int player) {
 	Player *p = getPlayer(player);
 	for (int i = 0; i < FULL_HAND_LENGTH; i++) {
@@ -113,6 +114,7 @@ bool BridgeGame::playRandomCard(int player) {
 	return false;
 }
 
+// deprecated
 bool BridgeGame::playRandomLegalCard(int player) {
 	Player *p = getPlayer(player);
 

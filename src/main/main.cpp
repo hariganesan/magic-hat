@@ -83,6 +83,7 @@ void runGame() {
 
 	while (isRunning) {
 		// EVENTS
+		// TODO: change functions to variables!
 		while (SDL_PollEvent(&event)) {
 			switch(event.type) {
 				case SDL_QUIT: isRunning = false; break;
@@ -139,6 +140,7 @@ void runGame() {
 
 			space = false;
 		} else if (g->display == BIDDING) {
+			// TODO: make graphic
 			if (g->consecutivePasses == 3) {
 				g->beginPlay();
 			}

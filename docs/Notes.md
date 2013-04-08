@@ -1,6 +1,8 @@
 Notes
 =======
 
+- start working on paper
+
 - work on opening lead
 - make a preferred suit (heirarchy?)
 - bidHistory - each bid should also be:
@@ -16,6 +18,12 @@ Notes
 	- if partner is winning, then duck?
 	- you could duck if your card is higher than partners (10 vs J)
 	- if opponent is out of suit (no trumps) then keep playing it
+
+- order test situations
+- making constant
+- what is the next card?
+- what is the next bid?
+- print statements for each card, then do a diff
 
 
 Completed

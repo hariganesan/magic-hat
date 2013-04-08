@@ -6,6 +6,7 @@
 Card *BridgeGame::chooseCard(int player)  {
 	Player *p = getPlayer(player);
 	Player *d = p->partner;
+	Card *c = NULL;
 	int trumpsLeft = 13 - discardCardsBySuit[trumpSuit];
 
 	if (p->role == DECLARER || p->role == DUMMY) {
@@ -39,19 +40,32 @@ Card *BridgeGame::chooseCard(int player)  {
 				return chooseHighest(player, leadSuit);
 			// rough a trick (if your partner isn't winning)
 			} else if (d != winningPlayer && p->nCardsBySuit[trumpSuit] > 0) {
-				return chooseLowestWinning(player, trumpSuit);
+				if ((c = chooseLowestWinning(player, trumpSuit))) {
+					return c;
+				} else {
+					return chooseJunk(player);
+				}
 			// discard junk
 			} else {
 				return chooseJunk(player);
 			}
 		} else if (turn == 3) {
-			// play highest card of lead suit
+			// play lowest winning card (if partner isn't)
 			if (p->nCardsBySuit[leadSuit] > 0) {
-				return chooseHighest(player, leadSuit);
+				if (d != winningPlayer && 
+					 (c = chooseLowestWinning(player, leadSuit)) != NULL) {
+					return c;
+				} else {
+					return chooseLowest(player, leadSuit);
+				}
 			// rough a trick (if your partner isn't winning)
 			// TODO: rough a roughed trick
 			} else if (d != winningPlayer && p->nCardsBySuit[trumpSuit] > 0) {
-				return chooseLowestWinning(player, trumpSuit);
+				if ((c = chooseLowestWinning(player, trumpSuit))) {
+					return c;
+				} else {
+					return chooseJunk(player);
+				}
 			// discard junk
 			} else {
 				return chooseJunk(player);
@@ -88,19 +102,32 @@ Card *BridgeGame::chooseCard(int player)  {
 				return chooseHighest(player, leadSuit);
 			// rough a trick (if your partner isn't winning)
 			} else if (d != winningPlayer && p->nCardsBySuit[trumpSuit] > 0) {
-				return chooseLowestWinning(player, trumpSuit);
+				if ((c = chooseLowestWinning(player, trumpSuit))) {
+					return c;
+				} else {
+					return chooseJunk(player);
+				}
 			// discard junk
 			} else {
 				return chooseJunk(player);
 			}
 		} else if (turn == 3) {
-			// play highest card of lead suit
+			// play lowest winning card (if partner isn't)
 			if (p->nCardsBySuit[leadSuit] > 0) {
-				return chooseHighest(player, leadSuit);
+				if (d != winningPlayer && 
+					 (c = chooseLowestWinning(player, leadSuit)) != NULL) {
+					return c;
+				} else {
+					return chooseLowest(player, leadSuit);
+				}
 			// rough a trick (if your partner isn't winning)
 			// TODO: rough a roughed trick
 			} else if (d != winningPlayer && p->nCardsBySuit[trumpSuit] > 0) {
-				return chooseLowestWinning(player, trumpSuit);
+				if ((c = chooseLowestWinning(player, trumpSuit))) {
+					return c;
+				} else {
+					return chooseJunk(player);
+				}
 			// discard junk
 			} else {
 				return chooseJunk(player);
@@ -108,6 +135,7 @@ Card *BridgeGame::chooseCard(int player)  {
 		}
 	}
 
+	cout << "error: no card chosen" << endl;
 	return NULL;
 } 
 
@@ -126,6 +154,8 @@ Card *BridgeGame::chooseLowest(int player, int suit) {
 	return lowestSoFar;
 }
 
+// ruffing a trick?
+// default - return NULL
 Card *BridgeGame::chooseLowestWinning(int player, int suit) {
 	Player *p = getPlayer(player);
 	Card *lowestSoFar = NULL;
@@ -140,12 +170,13 @@ Card *BridgeGame::chooseLowestWinning(int player, int suit) {
 	}
 	
 	if (!lowestSoFar)
-		return chooseJunk(player);
+		return NULL;
 
 	return lowestSoFar;
 }
 
 // conditional on if winning the trick
+// TODO: default - choose lowest?
 Card *BridgeGame::chooseHighest(int player, int suit) {
 	Player *p = getPlayer(player);
 	Card *highestSoFar = NULL;
@@ -221,6 +252,7 @@ Card *BridgeGame::chooseNthHighestCardBySuit(int player, int suit, int n) {
 	return NULL;
 }
 
+// opening lead and rest of hand
 int BridgeGame::choosePreferredSuit(int player) {
 	// start with all four suits...
 	// pick any team bids from bid history
