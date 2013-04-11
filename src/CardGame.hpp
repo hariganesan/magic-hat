@@ -127,6 +127,7 @@ public:
 	int display;
 	Player *dealer;
 	Player *leadPlayer;
+	bool testing;
 
 	CardGame(ifstream &infile);
 	~CardGame();

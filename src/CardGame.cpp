@@ -26,12 +26,15 @@ CardGame::CardGame(ifstream &infile) : winningPlayer(NULL), turn(0), tricksTaken
 	srand(time(NULL));
 
 	if (!infile) {
+		testing = false;
 		// fill up deck (in order)
 		for (int i = 0; i < DECK_SIZE; i++) {
 			Card *card = new Card(i/13, i % 13);
 			deck[i] = card;
 		}
 	} else {
+		testing = true;
+		// fill deck from file (to be dealt in order)
 		readCardsCL(infile);
 	}
 
@@ -48,6 +51,7 @@ CardGame::~CardGame() {
 
 void CardGame::beginPlay() {
 	display = PLAYING;
+
 	dealCards();
 }
 
@@ -63,8 +67,16 @@ void CardGame::dealCards() {
 			return;
 		}
 
-		int randNum = rand() % numPlayersLeft;
-		Player *p = getPlayer(playerArray[randNum]);
+		Player *p;
+		int randNum;
+
+		if (!testing) {
+			randNum = rand() % numPlayersLeft;
+			p = getPlayer(playerArray[randNum]);
+		} else {
+			randNum = 0;
+			p = getPlayer(playerArray[0]);
+		}
 
 		if (p->nCards == FULL_HAND_LENGTH) {
 			numPlayersLeft--;
@@ -190,18 +202,19 @@ void CardGame::printHand(int player) {
 
 void CardGame::readCardsCL(ifstream &infile) {
 	int suit, number;
-
 	
 	// suit number player1 /n etc... player2
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		for (int j = 0; j < FULL_HAND_LENGTH; j++) {
-			if (!(infile >> suit >> number)) {
+			if (!(infile >> number >> suit)) {
 				cerr << "error: reading cards from CL" << endl;
 				return;
 			}
 
-			players[i]->hand[j]->suit = suit;
-			players[i]->hand[j]->number = number;
+			Card *card = new Card(suit, number);
+			deck[i*13+j] = card;
+			//players[i]->hand[j]->suit = suit;
+			//players[i]->hand[j]->number = number;
 		}
 	}
 }
