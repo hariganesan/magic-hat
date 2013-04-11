@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <sstream>
+#include <fstream>
 
 using namespace std;
 
@@ -127,7 +128,7 @@ public:
 	Player *dealer;
 	Player *leadPlayer;
 
-	CardGame();
+	CardGame(ifstream &infile);
 	~CardGame();
 	void beginPlay();
 	void dealCards();
@@ -139,6 +140,7 @@ public:
 	void clearFelt();
 	void printHand(int player);
 	void drawHand(int player, int y_location);
+	void readCardsCL(ifstream &infile);
 };
 
 class BridgeGame: public CardGame {
@@ -150,7 +152,7 @@ public:
 	Bid *bidHistory[MAXIMUM_BID_COUNT];
 	int consecutivePasses;
 
-	BridgeGame();
+	BridgeGame(ifstream &infile);
 	void beginPlay();
 	void playCard(int player, Card *card);
 	bool winningTrick(Card *card); // checks to see if card is winning trick

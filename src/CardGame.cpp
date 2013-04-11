@@ -3,7 +3,7 @@
 
 #include "CardGame.hpp"
 
-CardGame::CardGame() : winningPlayer(NULL), turn(0), tricksTaken(0) {
+CardGame::CardGame(ifstream &infile) : winningPlayer(NULL), turn(0), tricksTaken(0) {
 	// initialize players
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		Player *newPlayer = new Player(i);
@@ -25,10 +25,14 @@ CardGame::CardGame() : winningPlayer(NULL), turn(0), tricksTaken(0) {
 	// keep track of seeded numbers
 	srand(time(NULL));
 
-	// fill up deck (in order)
-	for (int i = 0; i < DECK_SIZE; i++) {
-		Card *card = new Card(i/13, i % 13);
-		deck[i] = card;
+	if (!infile) {
+		// fill up deck (in order)
+		for (int i = 0; i < DECK_SIZE; i++) {
+			Card *card = new Card(i/13, i % 13);
+			deck[i] = card;
+		}
+	} else {
+		readCardsCL(infile);
 	}
 
 	// fill up discard
@@ -181,5 +185,23 @@ void CardGame::printHand(int player) {
 			cout << "suit: " << p->hand[i]->suit; 
 			cout << ", number: " << p->hand[i]->number << endl;
 		}	
+	}
+}
+
+void CardGame::readCardsCL(ifstream &infile) {
+	int suit, number;
+
+	
+	// suit number player1 /n etc... player2
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		for (int j = 0; j < FULL_HAND_LENGTH; j++) {
+			if (!(infile >> suit >> number)) {
+				cerr << "error: reading cards from CL" << endl;
+				return;
+			}
+
+			players[i]->hand[j]->suit = suit;
+			players[i]->hand[j]->number = number;
+		}
 	}
 }

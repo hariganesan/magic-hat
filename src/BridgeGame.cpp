@@ -3,7 +3,8 @@
 
 #include "CardGame.hpp"
 
-BridgeGame::BridgeGame() : CardGame(), trumpSuit(-1), nBids(0), consecutivePasses(0) {
+BridgeGame::BridgeGame(ifstream &infile) : CardGame(infile), trumpSuit(-1),
+																		 nBids(0), consecutivePasses(0) {
 	// set display to bidding
 	display = BIDDING;
 

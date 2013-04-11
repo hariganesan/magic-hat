@@ -5,9 +5,25 @@
 
 using namespace std;
 
-void runGame();
+void runGame(ifstream &infile);
 
 int main(int argc, char **argv) {
+	// check command line args
+	ifstream infile;
+	if (argc == 1) {
+		infile.open(NULL);
+	} else if (argc == 3 && strcmp(argv[1],"-t") == 0) {
+		infile.open(argv[2]);
+
+		if (!infile) {
+			cerr << "error: unable to read file" << endl;
+			return EXIT_FAILURE;
+		}
+	} else {
+		cerr << "usage: " << argv[0] << " [-t] (filename)" << endl;
+		return EXIT_FAILURE;
+	}
+
 	// initialize sdl, ttf, and opengl
 	SDL_Init(SDL_INIT_EVERYTHING);
 	TTF_Init();
@@ -43,7 +59,7 @@ int main(int argc, char **argv) {
   	//toggleMusic();
   }
 
-	runGame();
+	runGame(infile);
 
 	Mix_CloseAudio();
 	TTF_CloseFont(font);
@@ -53,11 +69,11 @@ int main(int argc, char **argv) {
 	return EXIT_SUCCESS;
 }
 
-void runGame() {
+void runGame(ifstream &infile) {
 	font = TTF_OpenFont(fontpath, 16);
 	int playerTurn = 0;
 	int cardsOnFelt = 0;
-	BridgeGame *g = new BridgeGame();
+	BridgeGame *g = new BridgeGame(infile);
 
 	// make a 2d array of bidding buttons
 	Button *bids[5][7];

@@ -16,18 +16,10 @@
 			}
 		},
 		{
-			"file": "src/main/Render.cpp",
+			"file": "src/CardGame.cpp",
 			"settings":
 			{
-				"buffer_size": 11136,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/main/main.cpp",
-			"settings":
-			{
-				"buffer_size": 3813,
+				"buffer_size": 4129,
 				"line_ending": "Unix"
 			}
 		},
@@ -48,18 +40,10 @@
 			}
 		},
 		{
-			"file": "src/CardGame.cpp",
-			"settings":
-			{
-				"buffer_size": 3555,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "src/Decisions.cpp",
 			"settings":
 			{
-				"buffer_size": 6374,
+				"buffer_size": 6974,
 				"line_ending": "Unix"
 			}
 		}
@@ -92,12 +76,12 @@
 	},
 	"file_history":
 	[
-		"/Users/Hari/scm/magic-hat/src/Decisions.cpp",
-		"/Users/Hari/scm/magic-hat/src/BridgeGame.cpp",
-		"/Users/Hari/scm/magic-hat/src/CardGame.hpp",
 		"/Users/Hari/scm/magic-hat/src/CardGame.cpp",
 		"/Users/Hari/scm/magic-hat/src/main/main.cpp",
 		"/Users/Hari/scm/magic-hat/src/main/Render.cpp",
+		"/Users/Hari/scm/magic-hat/src/Decisions.cpp",
+		"/Users/Hari/scm/magic-hat/src/BridgeGame.cpp",
+		"/Users/Hari/scm/magic-hat/src/CardGame.hpp",
 		"/Users/Hari/scm/magic-hat/Makefile",
 		"/Users/Hari/scm/magic-hat/src/main/Render.hpp",
 		"/Users/Hari/scm/magic-hat/docs/Script.md",
@@ -155,6 +139,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"					cout << \"not returning c\" << endl;",
+			"cout << \"returning c\" << endl;",
+			"return c;",
+			"return c",
 			"bid[0]",
 			"bid[1]",
 			"bid[0]",
@@ -278,10 +266,6 @@
 			"g.",
 			"b",
 			"Block",
-			"block",
-			"Block",
-			"block",
-			"Block",
 			"block"
 		],
 		"highlight": true,
@@ -300,7 +284,6 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
 				{
@@ -331,18 +314,18 @@
 				},
 				{
 					"buffer": 1,
-					"file": "src/main/Render.cpp",
+					"file": "src/CardGame.cpp",
 					"settings":
 					{
-						"buffer_size": 11136,
+						"buffer_size": 4129,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3939,
-								3939
+								0,
+								0
 							]
 						],
 						"settings":
@@ -358,33 +341,6 @@
 				},
 				{
 					"buffer": 2,
-					"file": "src/main/main.cpp",
-					"settings":
-					{
-						"buffer_size": 3813,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3711,
-								3711
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
 					"file": "src/BridgeGame.cpp",
 					"settings":
 					{
@@ -411,7 +367,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 3,
 					"file": "src/CardGame.hpp",
 					"settings":
 					{
@@ -432,52 +388,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2002.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "src/CardGame.cpp",
-					"settings":
-					{
-						"buffer_size": 3555,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2367.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
+					"buffer": 4,
 					"file": "src/Decisions.cpp",
 					"settings":
 					{
-						"buffer_size": 6374,
+						"buffer_size": 6974,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6102,
-								6102
+								6936,
+								6936
 							]
 						],
 						"settings":
@@ -486,7 +415,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1219.0,
+						"translation.y": 3693.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
