@@ -1,8 +1,6 @@
 Notes
 =======
 
-- start working on paper
-
 - work on opening lead
 - make a preferred suit (heirarchy?)
 - bidHistory - each bid should also be:
@@ -19,23 +17,33 @@ Notes
 	- you could duck if your card is higher than partners (10 vs J)
 	- if opponent is out of suit (no trumps) then keep playing it
 
-- order test situations
+- make test situations
 - making constant
 - what is the next card?
 - what is the next bid?
 - print statements for each card, then do a diff
 
+- navigation
+	- what kind of data structure should i use? (JSON/XML)
+	data types:
+	- general topic
+	- load scenario?
+	- slide number
+	- slide info
+	- back/forward/finish buttons?
+	- spaces in-between
+
+	c++ side:
+	load JSON
+	display first slide and scenario
+	if spaces in-between, display run button => nav buttons
+	otherwise, display nav buttons
+	designate click events for nav buttons
+
 
 Completed
 =============
-- bid struct
-- choose more specific cards
-- decisions file
-- render file
-- dividing into roles
-- pass/double enhancement
-- contract vs noncontract split
-- split up card game into bridge game
+- testing
 
 On The Back Burner
 ==============

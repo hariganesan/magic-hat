@@ -3,7 +3,8 @@
 
 #include "CardGame.hpp"
 
-CardGame::CardGame(ifstream &infile) : winningPlayer(NULL), turn(0), tricksTaken(0) {
+CardGame::CardGame(ifstream &infile) : winningPlayer(NULL), turn(0), 
+																			 tricksTaken(0), currentLesson("") {
 	// initialize players
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		Player *newPlayer = new Player(i);
@@ -213,8 +214,6 @@ void CardGame::readCardsCL(ifstream &infile) {
 
 			Card *card = new Card(suit, number);
 			deck[i*13+j] = card;
-			//players[i]->hand[j]->suit = suit;
-			//players[i]->hand[j]->number = number;
 		}
 	}
 }

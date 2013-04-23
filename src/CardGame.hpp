@@ -6,8 +6,10 @@
 #include <cstdlib>
 #include <sstream>
 #include <fstream>
+#include "json_spirit_reader_template.h"
 
 using namespace std;
+using namespace json_spirit;
 
 const int FULL_HAND_LENGTH = 13;
 const int DECK_SIZE = 52;
@@ -26,6 +28,7 @@ enum {
 	REDOUBLE
 };
 
+// number values
 enum {
 	TWO,
 	THREE,
@@ -42,6 +45,7 @@ enum {
 	ACE
 };
 
+// player roles
 enum {
 	DECLARER,
 	DEFENDER_ONE,
@@ -49,9 +53,11 @@ enum {
 	DEFENDER_TWO
 };
 
+// display types
 enum {
 	BIDDING,
-	PLAYING
+	PLAYING,
+	TUTORIAL
 };
 
 struct Card {
@@ -128,6 +134,8 @@ public:
 	Player *dealer;
 	Player *leadPlayer;
 	bool testing;
+	string currentLesson;
+	Array slides;
 
 	CardGame(ifstream &infile);
 	~CardGame();
@@ -142,6 +150,8 @@ public:
 	void printHand(int player);
 	void drawHand(int player, int y_location);
 	void readCardsCL(ifstream &infile);
+	bool loadSlides(const char *file);
+	void displaySlide(int slideNumber);
 };
 
 class BridgeGame: public CardGame {

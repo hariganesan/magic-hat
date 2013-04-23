@@ -11,23 +11,7 @@
 			"file": "docs/Notes.md",
 			"settings":
 			{
-				"buffer_size": 956,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/CardGame.cpp",
-			"settings":
-			{
-				"buffer_size": 4129,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/BridgeGame.cpp",
-			"settings":
-			{
-				"buffer_size": 4013,
+				"buffer_size": 1135,
 				"line_ending": "Unix"
 			}
 		},
@@ -35,15 +19,48 @@
 			"file": "src/CardGame.hpp",
 			"settings":
 			{
-				"buffer_size": 2848,
+				"buffer_size": 3193,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/Decisions.cpp",
+			"file": "src/Tutorial.cpp",
 			"settings":
 			{
-				"buffer_size": 6974,
+				"buffer_size": 594,
+				"line_ending": "Unix",
+				"name": "// Hari Ganesan 3/21/13"
+			}
+		},
+		{
+			"file": "Makefile",
+			"settings":
+			{
+				"buffer_size": 596,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/main/Render.hpp",
+			"settings":
+			{
+				"buffer_size": 799,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "tools/json_spirit_v4.05/json_headers_only_demo/json_headers_only_demo.cpp",
+			"settings":
+			{
+				"buffer_size": 3862,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/main/main.cpp",
+			"settings":
+			{
+				"buffer_size": 4295,
 				"line_ending": "Unix"
 			}
 		}
@@ -76,14 +93,21 @@
 	},
 	"file_history":
 	[
-		"/Users/Hari/scm/magic-hat/src/CardGame.cpp",
+		"/Users/Hari/scm/magic-hat/tools/jsoncpp-src-0.5.0/SConstruct",
+		"/Users/Hari/scm/magic-hat/tools/jsoncpp-src-0.5.0/scons-LICENSE",
 		"/Users/Hari/scm/magic-hat/src/main/main.cpp",
-		"/Users/Hari/scm/magic-hat/src/main/Render.cpp",
-		"/Users/Hari/scm/magic-hat/src/Decisions.cpp",
+		"/Users/Hari/scm/magic-hat/src/CardGame.cpp",
+		"/Users/Hari/scm/magic-hat/src/main/Render.hpp",
+		"/Users/Hari/scm/magic-hat/src/script/lesson1.JSON",
+		"/Users/Hari/scm/magic-hat/tools/jsoncpp-src-0.5.0/dist/jsoncpp-src-0.5.0.tar.gz",
+		"/Users/Hari/scm/magic-hat/src/Elements.cpp",
+		"/Users/Hari/scm/magic-hat/src/Elements.hpp",
 		"/Users/Hari/scm/magic-hat/src/BridgeGame.cpp",
 		"/Users/Hari/scm/magic-hat/src/CardGame.hpp",
+		"/Users/Hari/scm/magic-hat/src/Decisions.cpp",
+		"/Users/Hari/scm/magic-hat/in.txt",
+		"/Users/Hari/scm/magic-hat/src/main/Render.cpp",
 		"/Users/Hari/scm/magic-hat/Makefile",
-		"/Users/Hari/scm/magic-hat/src/main/Render.hpp",
 		"/Users/Hari/scm/magic-hat/docs/Script.md",
 		"/Users/Hari/scm/magic-hat/src/Render.cpp",
 		"/Users/Hari/scm/magic-hat/src/main.cpp",
@@ -130,6 +154,7 @@
 		"height": 0.0,
 		"where_history":
 		[
+			"/Users/Hari/scm/magic-hat/tools/jsoncpp-src-0.5.0",
 			"/Users/Hari/scm/magic-hat/src",
 			"/Users/Hari/scm/yale-tetris"
 		]
@@ -139,6 +164,18 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"$(CFLAGS)",
+			"addr",
+			"build_dir",
+			"BUILD_DIR",
+			"build_dir",
+			"BUILD_DIR",
+			"build_dir",
+			"Json::Value",
+			":",
+			"		",
+			"	",
+			"char *file",
 			"					cout << \"not returning c\" << endl;",
 			"cout << \"returning c\" << endl;",
 			"return c;",
@@ -254,19 +291,7 @@
 			"Shape",
 			"tetris",
 			"200",
-			"150",
-			"                      ",
-			"position",
-			"surface",
-			"j",
-			"                      ",
-			"250",
-			"i",
-			"x",
-			"g.",
-			"b",
-			"Block",
-			"block"
+			"150"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -284,6 +309,7 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -291,46 +317,20 @@
 					"file": "docs/Notes.md",
 					"settings":
 					{
-						"buffer_size": 956,
+						"buffer_size": 1135,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								451,
-								451
+								991,
+								991
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src/CardGame.cpp",
-					"settings":
-					{
-						"buffer_size": 4129,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
@@ -340,23 +340,51 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "src/BridgeGame.cpp",
+					"buffer": 1,
+					"file": "src/CardGame.hpp",
 					"settings":
 					{
-						"buffer_size": 4013,
+						"buffer_size": 3193,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3169,
-								3169
+								1969,
+								1969
 							]
 						],
 						"settings":
 						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1911.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/Tutorial.cpp",
+					"settings":
+					{
+						"buffer_size": 594,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								335,
+								335
+							]
+						],
+						"settings":
+						{
+							"auto_name": "// Hari Ganesan 3/21/13",
 							"syntax": "Packages/C++/C++.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
@@ -368,24 +396,23 @@
 				},
 				{
 					"buffer": 3,
-					"file": "src/CardGame.hpp",
+					"file": "Makefile",
 					"settings":
 					{
-						"buffer_size": 2848,
+						"buffer_size": 596,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								287,
-								287
+								260,
+								260
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/Makefile/Makefile.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -395,18 +422,72 @@
 				},
 				{
 					"buffer": 4,
-					"file": "src/Decisions.cpp",
+					"file": "src/main/Render.hpp",
 					"settings":
 					{
-						"buffer_size": 6974,
+						"buffer_size": 799,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6936,
-								6936
+								309,
+								309
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "tools/json_spirit_v4.05/json_headers_only_demo/json_headers_only_demo.cpp",
+					"settings":
+					{
+						"buffer_size": 3862,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2833,
+								2833
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 1.0,
+						"translation.y": 1789.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/main/main.cpp",
+					"settings":
+					{
+						"buffer_size": 4295,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4252,
+								4252
 							]
 						],
 						"settings":
@@ -415,7 +496,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 3693.0,
+						"translation.y": 3149.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -487,6 +568,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 148.0,
+	"side_bar_width": 233.0,
 	"status_bar_visible": true
 }

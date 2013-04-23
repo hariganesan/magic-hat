@@ -10,6 +10,7 @@
 #include <string>
 #include "../CardGame.hpp"
 #include "../Elements.hpp"
+#include "json_spirit_reader_template.h"
 
 // window dimensions
 const int WINDOW_WIDTH = 800;

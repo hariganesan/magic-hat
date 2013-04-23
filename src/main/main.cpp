@@ -144,7 +144,6 @@ void runGame(ifstream &infile) {
 				cardsOnFelt = 0;
 				playerTurn = g->leadPlayer->name;
 			} else {
-				//g->playRandomLegalCard(playerTurn);
 				Card *c = g->chooseCard(playerTurn);
 				g->playCard(playerTurn, c);
 				cardsOnFelt++;
@@ -160,6 +159,9 @@ void runGame(ifstream &infile) {
 			if (g->consecutivePasses == 3) {
 				g->beginPlay();
 			}
+		} else if (g->display == TUTORIAL) {
+			g->currentLesson = "script/lesson1";
+			g->loadSlides(g->currentLesson.c_str());
 		}
 		
 		// RENDERING
