@@ -3,10 +3,9 @@
 		"topic": "",
 		"info": "",
 		"scenario": NULL,
-		"nav": {
-			"back": true,
-			"run": 0,
-			"forward": true,
+		"nav_back": true,
+		"nav_run": 0,
+		"nav_forward": true,
 		}
 	},
 */
@@ -16,20 +15,18 @@
 		"topic": "Opening Lead",
 		"info": "There are many factors required for the opening lead.",
 		"scenario": 1,
-		"nav": {
-			"back": false,
-			"run": 0,
-			"forward": true
+		"nav_back": false,
+		"nav_run": 0,
+		"nav_forward": true
 		}
 	},
 	{
 		"topic": "Opening Lead",
 		"info": "The first is to note trump suits and opponent strong suits.",
 		"scenario": 1,
-		"nav": {
-			"back": true,
-			"run": 0,
-			"forward": false
+		"nav_back": true,
+		"nav_run": 0,
+		"nav_forward": false
 		}
 	}
 ]
