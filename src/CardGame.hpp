@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <sstream>
 #include <fstream>
+#include "SDL_ttf/SDL_ttf.h"
 #include "json_spirit_reader_template.h"
 
 using namespace std;
@@ -15,6 +16,16 @@ const int FULL_HAND_LENGTH = 13;
 const int DECK_SIZE = 52;
 const int NUM_PLAYERS = 4;
 const int MAXIMUM_BID_COUNT = 60;
+const int MAX_SLIDE_COUNT = 100;
+
+struct Slide {
+	string topic;
+	string info;
+	int scenario;
+	bool navForward;
+	bool navBack;
+	int navRun;
+};
 
 // suits and bids
 enum {
@@ -57,7 +68,8 @@ enum {
 enum {
 	BIDDING,
 	PLAYING,
-	TUTORIAL
+	TUTORIAL,
+	MAIN
 };
 
 struct Card {
@@ -135,7 +147,12 @@ public:
 	Player *leadPlayer;
 	bool testing;
 	string currentLesson;
-	Array slides;
+	Slide slides[MAX_SLIDE_COUNT];
+	int currentSlide;
+	TTF_Font *font;
+	TTF_Font *font32;
+	bool cardsDealt;
+	int runTimer;
 
 	CardGame(ifstream &infile);
 	~CardGame();
@@ -147,11 +164,18 @@ public:
 	Player *getPlayer(int player);
 	Card **getFelt();
 	void clearFelt();
-	void printHand(int player);
+	void printHand(ofstream &outfile, int player);
 	void drawHand(int player, int y_location);
 	void readCardsCL(ifstream &infile);
+	void readCards(const char *file);
+	void fillRemainingCards();
+	// tutorial fns
 	bool loadSlides(const char *file);
 	void displaySlide(int slideNumber);
+	void prevSlide();
+	void nextSlide();
+	void loadScenario();
+	void runScenario();
 };
 
 class BridgeGame: public CardGame {

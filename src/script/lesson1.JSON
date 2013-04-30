@@ -1,32 +1,18 @@
-/* slide default
-	{
-		"topic": "",
-		"info": "",
-		"scenario": NULL,
-		"nav_back": true,
-		"nav_run": 0,
-		"nav_forward": true,
-		}
-	},
-*/
-
 [
 	{
 		"topic": "Opening Lead",
 		"info": "There are many factors required for the opening lead.",
-		"scenario": 1,
+		"scenario": -1,
 		"nav_back": false,
 		"nav_run": 0,
 		"nav_forward": true
-		}
 	},
 	{
 		"topic": "Opening Lead",
 		"info": "The first is to note trump suits and opponent strong suits.",
 		"scenario": 1,
 		"nav_back": true,
-		"nav_run": 0,
+		"nav_run": 1,
 		"nav_forward": false
-		}
 	}
 ]

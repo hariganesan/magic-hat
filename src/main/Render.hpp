@@ -17,15 +17,28 @@ const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 const int MARGIN = 10;
 
-// font
-TTF_Font *font;
-const char *fontpath = "assets/fonts/chintzy.ttf";
+// text colors
+const SDL_Color TEXT_WHITE = {220, 220, 220};
+const SDL_Color TEXT_GRAY = {150, 150, 150};
+const SDL_Color TEXT_BLACK = {20, 20, 20};
+const SDL_Color TEXT_RED = {200, 0, 0};
 
-// music
-Mix_Music *music = NULL;
-const char *musicpath = "assets/music/senomar.mid";
+// tutorial nav buttons
+const int NAV_BOX_X = 100;
+const int NAV_BOX_Y = 300;
+const int NAV_BOX_W = WINDOW_WIDTH-200;
+const int NAV_BOX_H = 150;
+const int NAV_BUTTON_W = 80;
+const int NAV_BUTTON_H = 20;
+const int NAV_FOR_X = 550;
+const int NAV_FOR_Y = 420;
+const int NAV_BACK_X = 150;
+const int NAV_BACK_Y = 420;
+const int NAV_RUN_X = 350;
+const int NAV_RUN_Y = 420;
 
+// render functions
 void render(BridgeGame *g);
-void SDL_GL_RenderText(const char *text, SDL_Color color, SDL_Rect *location);
+void SDL_GL_RenderText(TTF_Font *font, const char *text, SDL_Color color, SDL_Rect *location);
 void SDL_GL_RenderPNG(const char *image, SDL_Rect *location);
 void toggleMusic(); // toggles music on and off

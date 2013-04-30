@@ -1,6 +1,18 @@
 Notes
 =======
 
+- finish "run" part of tutorial
+- finish lesson 1
+- add player-card-click functionality
+- add multiple rounds (go back to bidding)
+- make linux platform available
+
+Completed
+=============
+
+
+- testing
+
 - work on opening lead
 - make a preferred suit (heirarchy?)
 - bidHistory - each bid should also be:
@@ -39,11 +51,6 @@ Notes
 	if spaces in-between, display run button => nav buttons
 	otherwise, display nav buttons
 	designate click events for nav buttons
-
-
-Completed
-=============
-- testing
 
 On The Back Burner
 ==============

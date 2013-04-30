@@ -5,8 +5,8 @@
 
 BridgeGame::BridgeGame(ifstream &infile) : CardGame(infile), trumpSuit(-1),
 																		 nBids(0), consecutivePasses(0) {
-	// set display to bidding
-	display = BIDDING;
+	// set display to main
+	display = MAIN;
 
 	//initialize bid history
 	finalBid = NULL;
@@ -39,7 +39,7 @@ void BridgeGame::beginPlay() {
 
 void BridgeGame::playCard(int player, Card *card) {
 	if (!card) {
-		cerr << "error: no card requested" << endl;
+		cerr << "error: no card requested to play" << endl;
 		return;
 	}
 

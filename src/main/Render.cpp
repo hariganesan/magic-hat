@@ -12,10 +12,7 @@ void render(BridgeGame *g) {
 	glPushMatrix();
 	// TODO: change to 0,1 for depth
 	glOrtho(0, WINDOW_WIDTH, WINDOW_HEIGHT, 0, -1, 1); // set matrix
-	SDL_Color TEXT_WHITE = {220, 220, 220};
-	SDL_Color TEXT_GRAY = {150, 150, 150};
-	//SDL_Color TEXT_BLACK = {20, 20, 20};
-	SDL_Color TEXT_RED = {200, 0, 0};
+
 	SDL_Rect location;
 	Player *p;
 
@@ -32,7 +29,35 @@ void render(BridgeGame *g) {
 	glVertex2f(MARGIN, WINDOW_HEIGHT - MARGIN);
 	glEnd();
 
-	if (g->display == BIDDING) {
+	if (g->display == MAIN) {
+		glColor3ub(0, 0, 0);
+
+		// start button
+		location.x = 500;
+		location.y = 250;
+		glBegin(GL_QUADS);
+		glVertex2f(location.x, location.y);
+		glVertex2f(location.x+100, location.y);
+		glVertex2f(location.x+100, location.y+50);
+		glVertex2f(location.x, location.y+50);
+		glEnd();
+		SDL_GL_RenderText(g->font32, "start", TEXT_WHITE, &location);
+
+		// tutorial button
+		location.x = 300;
+		location.y = 250;
+
+		glColor3ub(0, 0, 0);
+		glBegin(GL_QUADS);
+		glVertex2f(location.x, location.y);
+		glVertex2f(location.x+100, location.y);
+		glVertex2f(location.x+100, location.y+50);
+		glVertex2f(location.x, location.y+50);
+		glEnd();
+		SDL_GL_RenderText(g->font32, "tutorial", TEXT_WHITE, &location);
+
+
+	} else if (g->display == BIDDING) {
 		// sample card
 		location.x = 50;
 		location.y = 50;
@@ -62,15 +87,15 @@ void render(BridgeGame *g) {
 				if (g->finalBid == NULL ||
 						i+1 > g->finalBid->number || // next level
 		 			 (i+1 == g->finalBid->number && j > g->finalBid->suit)) { // higher suit
-					SDL_GL_RenderText(ss.str().c_str(), TEXT_WHITE, &location);
+					SDL_GL_RenderText(g->font, ss.str().c_str(), TEXT_WHITE, &location);
 					location.x += 20;
-					SDL_GL_RenderText(g->getSuit(j), TEXT_WHITE, &location);
+					SDL_GL_RenderText(g->font, g->getSuit(j), TEXT_WHITE, &location);
 					location.x += 30;
 				} else {
 					// grayed out bids
-					SDL_GL_RenderText(ss.str().c_str(), TEXT_GRAY, &location);
+					SDL_GL_RenderText(g->font, ss.str().c_str(), TEXT_GRAY, &location);
 					location.x += 20;
-					SDL_GL_RenderText(g->getSuit(j), TEXT_GRAY, &location);
+					SDL_GL_RenderText(g->font, g->getSuit(j), TEXT_GRAY, &location);
 					location.x += 30;					
 				}
 				ss.str("");
@@ -83,27 +108,27 @@ void render(BridgeGame *g) {
 		// BID TABLE
 		location.x = 450;
 		location.y = 100;
-		SDL_GL_RenderText("W", TEXT_RED, &location);
+		SDL_GL_RenderText(g->font, "W", TEXT_RED, &location);
 		location.x += 50;
-		SDL_GL_RenderText("N", TEXT_RED, &location);
+		SDL_GL_RenderText(g->font, "N", TEXT_RED, &location);
 		location.x += 50;
-		SDL_GL_RenderText("E", TEXT_RED, &location);
+		SDL_GL_RenderText(g->font, "E", TEXT_RED, &location);
 		location.x += 50;
-		SDL_GL_RenderText("S", TEXT_RED, &location);
+		SDL_GL_RenderText(g->font, "S", TEXT_RED, &location);
 
 		int bidder = g->dealer->name;
 		location.y += 30;
 		for (int i = 0; g->bidHistory[i] != NULL; i++) {
 			location.x = bidder*50 + 450;
 			if (g->bidHistory[i]->suit == PASS) {
-				SDL_GL_RenderText("PASS", TEXT_WHITE, &location);
+				SDL_GL_RenderText(g->font, "PASS", TEXT_WHITE, &location);
 			} else if (g->bidHistory[i]->suit == DOUBLE) {
-				SDL_GL_RenderText("DBLE", TEXT_WHITE, &location);
+				SDL_GL_RenderText(g->font, "DBLE", TEXT_WHITE, &location);
 			} else {
 				ss << g->bidHistory[i]->number;
-				SDL_GL_RenderText(ss.str().c_str(), TEXT_WHITE, &location);
+				SDL_GL_RenderText(g->font, ss.str().c_str(), TEXT_WHITE, &location);
 				location.x += 20;
-				SDL_GL_RenderText(g->getSuit(g->bidHistory[i]->suit), TEXT_WHITE, &location);
+				SDL_GL_RenderText(g->font, g->getSuit(g->bidHistory[i]->suit), TEXT_WHITE, &location);
 				ss.str("");
 				ss.clear();
 			}
@@ -117,17 +142,17 @@ void render(BridgeGame *g) {
 		// NAVIGATION
 		location.x = 150;
 		location.y = 300;
-		SDL_GL_RenderText("Pass", TEXT_WHITE, &location);		
+		SDL_GL_RenderText(g->font, "Pass", TEXT_WHITE, &location);		
 		location.x = 250;
 		location.y = 300;
-		SDL_GL_RenderText("Double", TEXT_WHITE, &location);		
+		SDL_GL_RenderText(g->font, "Double", TEXT_WHITE, &location);		
 
 		location.x = 650;
 		location.y = 400;
-		SDL_GL_RenderText("Play!", TEXT_WHITE, &location);
+		SDL_GL_RenderText(g->font, "Play!", TEXT_WHITE, &location);
 
 	// PLAYING
-	} else if (g->display == PLAYING) {
+	} else if (g->display == PLAYING || g->display == TUTORIAL && g->cardsDealt) {
 
 		// HANDS
 
@@ -138,10 +163,10 @@ void render(BridgeGame *g) {
 
 		for (int i = 0; i < FULL_HAND_LENGTH; i++) {
 			if (p->hand[i] != NULL) {
-				SDL_GL_RenderText(g->getNumber(p->hand[i]->number), TEXT_WHITE, &location);
+				SDL_GL_RenderText(g->font, g->getNumber(p->hand[i]->number), TEXT_WHITE, &location);
 				location.x += 20;
 				
-				SDL_GL_RenderText(g->getSuit(p->hand[i]->suit), TEXT_WHITE, &location);
+				SDL_GL_RenderText(g->font, g->getSuit(p->hand[i]->suit), TEXT_WHITE, &location);
 				location.y += 25;
 				location.x -= 20;
 			}
@@ -154,10 +179,10 @@ void render(BridgeGame *g) {
 
 		for (int i = 0; i < FULL_HAND_LENGTH; i++) {
 			if (p->hand[i] != NULL) {
-				SDL_GL_RenderText(g->getNumber(p->hand[i]->number), TEXT_WHITE, &location);
+				SDL_GL_RenderText(g->font, g->getNumber(p->hand[i]->number), TEXT_WHITE, &location);
 				location.x += 20;
 				
-				SDL_GL_RenderText(g->getSuit(p->hand[i]->suit), TEXT_WHITE, &location);
+				SDL_GL_RenderText(g->font, g->getSuit(p->hand[i]->suit), TEXT_WHITE, &location);
 				location.x += 30;
 			}	
 		}
@@ -169,10 +194,10 @@ void render(BridgeGame *g) {
 
 		for (int i = 0; i < FULL_HAND_LENGTH; i++) {
 			if (p->hand[i] != NULL) {
-				SDL_GL_RenderText(g->getNumber(p->hand[i]->number), TEXT_WHITE, &location);
+				SDL_GL_RenderText(g->font, g->getNumber(p->hand[i]->number), TEXT_WHITE, &location);
 				location.x += 20;
 				
-				SDL_GL_RenderText(g->getSuit(p->hand[i]->suit), TEXT_WHITE, &location);
+				SDL_GL_RenderText(g->font, g->getSuit(p->hand[i]->suit), TEXT_WHITE, &location);
 				location.y += 25;
 				location.x -= 20;
 			}	
@@ -185,10 +210,10 @@ void render(BridgeGame *g) {
 
 		for (int i = 0; i < FULL_HAND_LENGTH; i++) {
 			if (p->hand[i] != NULL) {
-				SDL_GL_RenderText(g->getNumber(p->hand[i]->number), TEXT_WHITE, &location);
+				SDL_GL_RenderText(g->font, g->getNumber(p->hand[i]->number), TEXT_WHITE, &location);
 				location.x += 20;
 				
-				SDL_GL_RenderText(g->getSuit(p->hand[i]->suit), TEXT_WHITE, &location);
+				SDL_GL_RenderText(g->font, g->getSuit(p->hand[i]->suit), TEXT_WHITE, &location);
 				location.x += 30;
 			}	
 		}
@@ -208,10 +233,10 @@ void render(BridgeGame *g) {
 				location.x = cardLocations[i][0];
 				location.y = cardLocations[i][1];
 
-				SDL_GL_RenderText(g->getNumber(felt[i]->number), TEXT_WHITE, &location);
+				SDL_GL_RenderText(g->font, g->getNumber(felt[i]->number), TEXT_WHITE, &location);
 				location.x += 20;
 					
-				SDL_GL_RenderText(g->getSuit(felt[i]->suit), TEXT_WHITE, &location);
+				SDL_GL_RenderText(g->font, g->getSuit(felt[i]->suit), TEXT_WHITE, &location);
 			}
 		}
 
@@ -223,21 +248,27 @@ void render(BridgeGame *g) {
 		for (int i = 0; i < NUM_PLAYERS; i++) {
 			p = g->getPlayer(i);
 			ss << p->nTricks;
-			SDL_GL_RenderText(ss.str().c_str(), TEXT_RED, &location);
+			SDL_GL_RenderText(g->font, ss.str().c_str(), TEXT_RED, &location);
 			location.x += 150;
 			ss.str("");
 			ss.clear();
 		}
 
 		// FINAL BID
-		
-		ss << g->finalBid->number;
-		location.x = 700;
-		SDL_GL_RenderText(ss.str().c_str(), TEXT_RED, &location);
-		location.x += 20;
-		SDL_GL_RenderText(g->getSuit(g->finalBid->suit), TEXT_RED, &location);
-		ss.str("");
-		ss.clear();
+		if (g->finalBid) {
+			ss << g->finalBid->number;
+			location.x = 700;
+			SDL_GL_RenderText(g->font, ss.str().c_str(), TEXT_RED, &location);
+			location.x += 20;
+			SDL_GL_RenderText(g->font, g->getSuit(g->finalBid->suit), TEXT_RED, &location);
+			ss.str("");
+			ss.clear();
+		}
+	}
+	
+	if (g->display == TUTORIAL) {
+		g->displaySlide(g->currentSlide); 
+
 	}
 
 	////////////////
@@ -250,7 +281,7 @@ void render(BridgeGame *g) {
 	return;
 }
 
-void SDL_GL_RenderText(const char *text, SDL_Color color, SDL_Rect *location) {
+void SDL_GL_RenderText(TTF_Font *font, const char *text, SDL_Color color, SDL_Rect *location) {
 	SDL_Surface *initial;
 	SDL_Surface *intermediary;
 	int w,h;
@@ -414,15 +445,3 @@ void SDL_GL_RenderPNG(const char *image, SDL_Rect *location) {
 
 }
 
-void toggleMusic() {
-	if (music == NULL) {
-		music = Mix_LoadMUS(musicpath);
-
-		// play infinite times
-		Mix_PlayMusic(music, -1);
-	} else {
-		Mix_HaltMusic();
-		Mix_FreeMusic(music);
-		music = NULL;
-	}
-}

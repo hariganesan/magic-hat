@@ -4,7 +4,9 @@
 #include "CardGame.hpp"
 
 CardGame::CardGame(ifstream &infile) : winningPlayer(NULL), turn(0), 
-																			 tricksTaken(0), currentLesson("") {
+																			 tricksTaken(0), currentLesson(""),
+																			 currentSlide(0), cardsDealt(false),
+																			 runTimer(0) {
 	// initialize players
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		Player *newPlayer = new Player(i);
@@ -29,6 +31,7 @@ CardGame::CardGame(ifstream &infile) : winningPlayer(NULL), turn(0),
 	if (!infile) {
 		testing = false;
 		// fill up deck (in order)
+		// TODO: free memory?
 		for (int i = 0; i < DECK_SIZE; i++) {
 			Card *card = new Card(i/13, i % 13);
 			deck[i] = card;
@@ -190,13 +193,17 @@ void CardGame::clearFelt() {
 	}
 }
 
-void CardGame::printHand(int player) {
+void CardGame::printHand(ofstream &outfile, int player) {
 	Player *p = getPlayer(player);
-	cout << "player " << player << ": " << endl;
 	for (int i = 0; i < FULL_HAND_LENGTH; i++) {
 		if (p->hand[i] != NULL) {
-			cout << "suit: " << p->hand[i]->suit; 
-			cout << ", number: " << p->hand[i]->number << endl;
+			if (!outfile) {
+				cout << p->hand[i]->suit; 
+				cout << " " << p->hand[i]->number << endl;
+			} else {
+				outfile << p->hand[i]->suit;
+				outfile << " " << p->hand[i]->number << endl;
+			}
 		}	
 	}
 }
@@ -216,4 +223,43 @@ void CardGame::readCardsCL(ifstream &infile) {
 			deck[i*13+j] = card;
 		}
 	}
+
+	cardsDealt = true;
+}
+
+void CardGame::readCards(const char *file) {
+	ifstream infile;
+	infile.open(file);
+
+	if (!infile) {
+		cerr << "error: unable to read file " << file << endl;
+		return;
+	}
+
+	int suit, number;
+	
+	testing = true;
+	// (player1) suit number /n suit... /n /n (player2) suit number ...
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		for (int j = 0; j < FULL_HAND_LENGTH; j++) {
+			if (infile && infile.peek() == '\n' && infile.ignore(1).peek() == '\n') {
+				cout << "incomplete player" << endl;
+				break; // go to next player
+			} else if (infile && !(infile >> number >> suit)) {
+				cerr << "error: reading cards from " << file << endl;
+				return;
+			}
+
+			Card *card = new Card(suit, number);
+			deck[i*13+j] = card;
+		}
+		infile.ignore(1);
+	}
+	
+	cardsDealt = true;
+}
+
+void CardGame::fillRemainingCards() {
+	// fill remaining cards in deck
+	;///?
 }
