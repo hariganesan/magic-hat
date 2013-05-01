@@ -10,9 +10,17 @@
 	{
 		"topic": "Opening Lead",
 		"info": "The first is to note trump suits and opponent strong suits.",
-		"scenario": 1,
+		"scenario": 2,
 		"nav_back": true,
-		"nav_run": 1,
+		"nav_run": 0,
+		"nav_forward": true
+	},
+	{
+		"topic": "Opening Lead",
+		"info": "Here, we can see that TRUMPSUIT is trump.",
+		"scenario": 2,
+		"nav_back": true,
+		"nav_run": 4,
 		"nav_forward": false
 	}
 ]

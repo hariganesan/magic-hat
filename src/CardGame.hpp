@@ -153,6 +153,9 @@ public:
 	TTF_Font *font32;
 	bool cardsDealt;
 	int runTimer;
+	int playerTurn;
+	int cardsOnFelt;
+	bool scenarioRan;
 
 	CardGame(ifstream &infile);
 	~CardGame();

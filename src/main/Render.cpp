@@ -30,8 +30,13 @@ void render(BridgeGame *g) {
 	glEnd();
 
 	if (g->display == MAIN) {
-		glColor3ub(0, 0, 0);
 
+		// title
+		location.x = 350;
+		location.y = 100;
+		SDL_GL_RenderText(g->font32, "BRIDGE", TEXT_WHITE, &location);
+
+		glColor3ub(0, 0, 0);
 		// start button
 		location.x = 500;
 		location.y = 250;
@@ -44,14 +49,14 @@ void render(BridgeGame *g) {
 		SDL_GL_RenderText(g->font32, "start", TEXT_WHITE, &location);
 
 		// tutorial button
-		location.x = 300;
+		location.x = 200;
 		location.y = 250;
 
 		glColor3ub(0, 0, 0);
 		glBegin(GL_QUADS);
 		glVertex2f(location.x, location.y);
-		glVertex2f(location.x+100, location.y);
-		glVertex2f(location.x+100, location.y+50);
+		glVertex2f(location.x+150, location.y);
+		glVertex2f(location.x+150, location.y+50);
 		glVertex2f(location.x, location.y+50);
 		glEnd();
 		SDL_GL_RenderText(g->font32, "tutorial", TEXT_WHITE, &location);
@@ -205,8 +210,8 @@ void render(BridgeGame *g) {
 
 		// player 3
 		p = g->getPlayer(3);
-		location.x = 80;
-		location.y = 550;
+		location.x = HAND_USER_X;
+		location.y = HAND_USER_Y;
 
 		for (int i = 0; i < FULL_HAND_LENGTH; i++) {
 			if (p->hand[i] != NULL) {

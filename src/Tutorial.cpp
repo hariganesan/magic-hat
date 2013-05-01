@@ -82,7 +82,7 @@ void CardGame::displaySlide(int slideNumber) {
 		SDL_GL_RenderText(this->font, "Previous", TEXT_GRAY, &location);
 	}
 
-	if (slides[slideNumber].navRun > 0) {
+	if (slides[slideNumber].navRun > 0 && scenarioRan == false) {
 		glColor3ub(40,40,40);
 		location.x = NAV_RUN_X+20;
 		location.y = NAV_RUN_Y;
@@ -103,6 +103,9 @@ void CardGame::displaySlide(int slideNumber) {
 }
 
 void CardGame::prevSlide() {
+	if (!slides[currentSlide].navBack)
+		return;
+
 	currentSlide--;
 	if (slides[currentSlide].navRun > 0) {
 		loadScenario();
@@ -112,6 +115,9 @@ void CardGame::prevSlide() {
 }
 
 void CardGame::nextSlide() {
+	if (!slides[currentSlide].navForward)
+		return;
+
 	currentSlide++;
 	if (slides[currentSlide].navRun > 0) {
 		loadScenario();
@@ -122,14 +128,62 @@ void CardGame::nextSlide() {
 
 void CardGame::loadScenario() {
 	stringstream ss;
-	ss << "src/scenarios/" << currentSlide << ".txt";
+	ss << "src/scenarios/" << currentSlide << ".bridge";
 	readCards(ss.str().c_str());
-	dealCards();
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		players[i]->role = i;
+	}
+	scenarioRan = false;
 }
 
 void CardGame::runScenario() {
 	// DO SOMETHING COOL
 	runTimer = 12*slides[currentSlide].navRun;
+	scenarioRan = true;
 }
 
 
+void CardGame::readCards(const char *file) {
+	ifstream infile;
+	infile.open(file);
+
+	if (!infile) {
+		cerr << "error: unable to read file " << file << endl;
+		return;
+	}
+
+	int suit, number;
+	
+	testing = true;
+	// (player1) suit number /n suit... /n /n (player2) suit number ...
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		for (int j = 0; j < FULL_HAND_LENGTH; j++) {
+			Player *p = getPlayer(i);
+
+			if (infile && infile.peek() == '\n' && infile.ignore(1).peek() == '\n') {
+				cout << "incomplete player" << endl;
+				break; // go to next player
+			} else if (infile && !(infile >> suit >> number)) {
+				cerr << "error: reading cards from " << file << endl;
+				return;
+			}
+
+			Card *c = new Card(suit, number);
+			p->hand[j] = c;
+			p->nCards++;
+			p->nCardsBySuit[c->suit]++;
+	}
+		infile.ignore(1);
+	}
+
+	// clear felt and tricks
+	cardsOnFelt = 0;
+	playerTurn = 0;
+	tricksTaken = 0;
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		felt[i] = NULL;
+		getPlayer(i)->nTricks = 0;
+	}
+
+	cardsDealt = true;
+}

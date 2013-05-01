@@ -1,14 +1,16 @@
 Notes
 =======
 
-- finish "run" part of tutorial
 - finish lesson 1
-- add player-card-click functionality
+
+
 - add multiple rounds (go back to bidding)
 - make linux platform available
 
 Completed
 =============
+- add player-card-click functionality
+- finish "run" part of tutorial
 
 
 - testing

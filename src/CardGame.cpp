@@ -6,7 +6,8 @@
 CardGame::CardGame(ifstream &infile) : winningPlayer(NULL), turn(0), 
 																			 tricksTaken(0), currentLesson(""),
 																			 currentSlide(0), cardsDealt(false),
-																			 runTimer(0) {
+																			 runTimer(0), playerTurn(0), cardsOnFelt(0),
+																			 scenarioRan(false) {
 	// initialize players
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		Player *newPlayer = new Player(i);
@@ -224,38 +225,6 @@ void CardGame::readCardsCL(ifstream &infile) {
 		}
 	}
 
-	cardsDealt = true;
-}
-
-void CardGame::readCards(const char *file) {
-	ifstream infile;
-	infile.open(file);
-
-	if (!infile) {
-		cerr << "error: unable to read file " << file << endl;
-		return;
-	}
-
-	int suit, number;
-	
-	testing = true;
-	// (player1) suit number /n suit... /n /n (player2) suit number ...
-	for (int i = 0; i < NUM_PLAYERS; i++) {
-		for (int j = 0; j < FULL_HAND_LENGTH; j++) {
-			if (infile && infile.peek() == '\n' && infile.ignore(1).peek() == '\n') {
-				cout << "incomplete player" << endl;
-				break; // go to next player
-			} else if (infile && !(infile >> number >> suit)) {
-				cerr << "error: reading cards from " << file << endl;
-				return;
-			}
-
-			Card *card = new Card(suit, number);
-			deck[i*13+j] = card;
-		}
-		infile.ignore(1);
-	}
-	
 	cardsDealt = true;
 }
 

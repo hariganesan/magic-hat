@@ -37,6 +37,10 @@ const int NAV_BACK_Y = 420;
 const int NAV_RUN_X = 350;
 const int NAV_RUN_Y = 420;
 
+// hands
+const int HAND_USER_X = 80;
+const int HAND_USER_Y = 560;
+
 // render functions
 void render(BridgeGame *g);
 void SDL_GL_RenderText(TTF_Font *font, const char *text, SDL_Color color, SDL_Rect *location);

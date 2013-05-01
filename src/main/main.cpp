@@ -90,8 +90,6 @@ int main(int argc, char *argv[]) {
 }
 
 void runGame(ifstream &infile) {
-	int playerTurn = 0;
-	int cardsOnFelt = 0;
 	BridgeGame *g = new BridgeGame(infile);
 	g->font = TTF_OpenFont(fontpath, 16);
 	g->font32 = TTF_OpenFont(fontpath, 32);
@@ -117,7 +115,13 @@ void runGame(ifstream &infile) {
 
 	// menu buttons
 	Button *BTN_start = new Button(500, 250, 100, 50);
-	Button *BTN_tutorial = new Button(300, 250, 100, 50);
+	Button *BTN_tutorial = new Button(200, 250, 150, 50);
+
+	// player card buttons
+	Button *userCards[FULL_HAND_LENGTH];
+	for (int i = 0; i < FULL_HAND_LENGTH; i++) {
+		userCards[i] = new Button(HAND_USER_X-5+i*50, HAND_USER_Y-5, 50, 20);
+	}
 
 	// event bools
 	SDL_Event event;
@@ -143,7 +147,7 @@ void runGame(ifstream &infile) {
 						for (int i = 0; i < 5; i++) {
 							for (int j = 0; j < 7; j++) {
 								if (bids[i][j]->handleEvents(event.button.x, event.button.y)) {
-									g->setBid(playerTurn, j+1, i);
+									g->setBid(g->playerTurn, j+1, i);
 									bidSet = true;
 								}
 							}
@@ -153,10 +157,10 @@ void runGame(ifstream &infile) {
 								g->beginPlay();
 							}
 						} else if (BTN_pass->handleEvents(event.button.x, event.button.y)) {
-							g->setBid(playerTurn, -1, PASS);
+							g->setBid(g->playerTurn, -1, PASS);
 							bidSet = true;
 						} else if (BTN_double->handleEvents(event.button.x, event.button.y)) {
-							g->setBid(playerTurn, -1, DOUBLE);
+							g->setBid(g->playerTurn, -1, DOUBLE);
 							bidSet = true;
 						}
 					} else if (event.button.button == SDL_BUTTON_LEFT && g->display == MAIN) {
@@ -174,7 +178,26 @@ void runGame(ifstream &infile) {
 						} else if (BTN_nav_for->handleEvents(event.button.x, event.button.y)) {
 							g->nextSlide();
 						} else if (BTN_nav_run->handleEvents(event.button.x, event.button.y)) {
-							g->runScenario();
+							if (!g->scenarioRan)
+								g->runScenario();
+						}
+					} else if (event.button.button == SDL_BUTTON_LEFT && g->display == PLAYING) {
+						if (g->playerTurn == 3) {
+							Player *p = g->getPlayer(3);
+							for (int i = 0, j = 0; i < FULL_HAND_LENGTH && j < FULL_HAND_LENGTH; i++) {
+								while (p->hand[j] == NULL && ++j < FULL_HAND_LENGTH)
+									;
+								if (j >= FULL_HAND_LENGTH)
+									continue;
+								
+								if (userCards[i]->handleEvents(event.button.x, event.button.y)) {
+									g->playCard(3, p->hand[j]); // may not be i!
+									g->cardsOnFelt++;
+									g->playerTurn = 0;
+								}
+
+								j++;
+							}
 						}
 					}
 					break;
@@ -185,17 +208,17 @@ void runGame(ifstream &infile) {
 		// LOGIC
 		if ((g->display == PLAYING && space) || 
 			  (g->display == TUTORIAL && g->runTimer > 0 && g->runTimer-- % 12 == 1)) {
-			if (cardsOnFelt == 4) {
+			if (g->cardsOnFelt == 4) {
 				g->clearFelt();
-				cardsOnFelt = 0;
-				playerTurn = g->leadPlayer->name;
+				g->cardsOnFelt = 0;
+				g->playerTurn = g->leadPlayer->name;
 			} else {
-				Card *c = g->chooseCard(playerTurn);
-				g->playCard(playerTurn, c);
-				cardsOnFelt++;
+				Card *c = g->chooseCard(g->playerTurn);
+				g->playCard(g->playerTurn, c);
+				g->cardsOnFelt++;
 				
-				if (++playerTurn >= 4) {
-					playerTurn = 0;
+				if (++g->playerTurn >= 4) {
+					g->playerTurn = 0;
 				}
 			}
 
